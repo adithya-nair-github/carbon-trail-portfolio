@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Adithya Nair × Carbon Trail</title>
+<meta name="description" content="Adithya Nair for Carbon Trail. Supply-chain operations, customer success, and the data gap behind ESG reporting.">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta property="og:title" content="Adithya Nair × Carbon Trail">
+<meta property="og:description" content="Bridging technical data operations and strategic customer success. A brief for the Founder's Office.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1E5631">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231E5631'/%3E%3Cpath d='M16 7c2 4 6 6 6 11a6 6 0 1 1-12 0c0-5 4-7 6-11z' fill='%23F4F1EA'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F4F1EA;
+  --paper:#FBF9F4;
+  --ink:#1A2420;
+  --slate:#334155;
+  --muted:#52606A;
+  --green:#1E5631;
+  --green-deep:#143D23;
+  --emerald:#047857;
+  --mist:#E5EFE8;
+  --line:#DDD6C8;
+  --shadow:0 22px 50px rgba(30,86,49,.16);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:Inter,"Segoe UI",system-ui,sans-serif;
+  --max:1120px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:
+    radial-gradient(900px 420px at 100% -10%, rgba(4,120,87,.08), transparent 60%),
+    radial-gradient(800px 480px at -10% 20%, rgba(30,86,49,.06), transparent 55%),
+    var(--bg);
+  color:var(--slate);
+  font-family:var(--sans);
+  font-size:1.0625rem;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:3px solid var(--emerald); outline-offset:3px}
+h1,h2,h3{margin:0; color:var(--ink); text-wrap:balance; letter-spacing:-.03em; line-height:1.08}
+p{margin:0}
+.wrap{width:min(var(--max), calc(100% - 40px)); margin-inline:auto}
+.kicker{
+  margin:0;
+  font-size:.78rem;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--emerald);
+}
+.nav{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(244,241,234,.88);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(30,86,49,.12);
+}
+.nav .wrap{display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:68px}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--ink); font-weight:700; letter-spacing:-.03em}
+.mark{width:28px; height:28px; border-radius:8px; background:var(--green); display:grid; place-items:center}
+.nav nav{display:flex; align-items:center; gap:4px}
+.nav nav a{
+  text-decoration:none;
+  color:var(--muted);
+  font-size:.92rem;
+  font-weight:500;
+  padding:8px 12px;
+  border-radius:999px;
+}
+.nav nav a:hover,.nav nav a.active{color:var(--ink); background:rgba(30,86,49,.08)}
+.nav nav a.cta{background:var(--green); color:#F7F6F1}
+.nav nav a.cta:hover{background:var(--green-deep); color:#fff}
+
+.hero{padding:28px 0 8px; position:relative}
+.hero .wrap{display:grid; gap:22px}
+.prepared{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; color:var(--muted); font-size:.92rem}
+h1{font-size:clamp(2.7rem, 6.4vw, 5.15rem); font-weight:700; max-width:16ch}
+h1 .x{
+  display:inline-block;
+  margin-inline:.12em;
+  color:var(--green);
+  font-weight:500;
+}
+h1 .for{color:var(--green)}
+.sub{font-family:var(--serif); font-size:clamp(1.35rem, 2.4vw, 1.85rem); color:var(--ink); letter-spacing:-.02em; max-width:28ch; line-height:1.25}
+.lede{max-width:68ch; font-size:1.08rem}
+.hero-actions{display:flex; flex-wrap:wrap; gap:10px; align-items:center}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  background:var(--green); color:#F6F4EE; text-decoration:none;
+  font:inherit; font-weight:600; font-size:.98rem;
+  border:0; border-radius:999px; padding:13px 18px; cursor:pointer;
+}
+.btn:hover{background:var(--green-deep)}
+.btn.ghost{background:transparent; color:var(--green); box-shadow:inset 0 0 0 1.5px var(--green)}
+.btn.ghost:hover{background:var(--mist)}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  border:1px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+  background:rgba(251,249,244,.8);
+}
+.stat{padding:16px 18px; display:grid; gap:4px; align-content:start}
+.stat + .stat{border-left:1px solid var(--line)}
+.stat b{
+  font-size:clamp(1.25rem, 2vw, 1.7rem);
+  letter-spacing:-.04em;
+  color:var(--ink);
+  font-variant-numeric:tabular-nums;
+  line-height:1;
+}
+.stat span{color:var(--muted); font-size:.86rem; line-height:1.35}
+
+.film{padding:12px 0 64px}
+.film .stats{margin-top:22px}
+.film-head{display:grid; gap:8px; margin-bottom:18px; max-width:70ch}
+.film-head h2{font-size:clamp(1.8rem, 3vw, 2.5rem)}
+.stage{
+  display:grid;
+  grid-template-columns:minmax(0,1.25fr) minmax(280px,.85fr);
+  gap:22px;
+  align-items:start;
+}
+.player{
+  margin:0;
+  border-radius:22px;
+  overflow:hidden;
+  background:#10281A;
+  box-shadow:var(--shadow), 0 0 0 1px rgba(30,86,49,.14);
+  aspect-ratio:16/9;
+}
+.poster{
+  position:relative;
+  display:block;
+  width:100%;
+  height:100%;
+  padding:0;
+  border:0;
+  background:#10281A;
+  cursor:pointer;
+  text-align:left;
+}
+.poster img,.poster iframe{
+  display:block; width:100%; height:100%; object-fit:cover; background:#163526;
+  transform:scale(1.18) translate(-9%, -6%);
+  transform-origin:center center;
+}
+.poster iframe{border:0; background:#0c1c14}
+.play{
+  position:absolute; inset:0;
+  display:grid; place-items:center; align-content:center; gap:12px;
+  background:linear-gradient(180deg, rgba(16,40,26,.05), rgba(16,40,26,.55));
+}
+.play b{
+  width:84px; height:84px; border-radius:50%;
+  background:#F4F1EA; color:var(--green);
+  display:grid; place-items:center; font-size:1.4rem;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+.play span{color:#F7F6F1; font-weight:600; letter-spacing:.08em; text-transform:uppercase; font-size:.78rem}
+.chapters{display:grid; gap:14px; margin-top:22px}
+.chapter{background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:16px 18px 14px; scroll-margin-top:84px}
+.chapter h3{font-size:.95rem; letter-spacing:.06em; text-transform:uppercase; color:var(--green); margin-bottom:10px}
+.points{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.points li{
+  display:grid; grid-template-columns:12.5rem minmax(0,1fr); gap:16px; align-items:center;
+  background:#fff; border:1px solid var(--line); border-radius:14px; padding:14px 16px;
+}
+.points b{color:var(--green-deep); font-size:1.02rem; letter-spacing:-.02em; line-height:1.25}
+.points span{font-size:.95rem}
+.jump{display:grid; gap:8px; margin:0; padding:0; list-style:none}
+.jump button{
+  font:inherit; text-align:left; cursor:pointer;
+  display:grid; gap:2px;
+  background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px 14px;
+}
+.jump button strong{color:var(--green); font-size:.75rem; letter-spacing:.08em; text-transform:uppercase}
+.jump button[aria-current="true"]{border-color:var(--green); box-shadow:inset 3px 0 0 var(--green)}
+.facts{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; margin-top:22px}
+.fact{background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:18px; display:grid; gap:8px; align-content:start}
+.fact b{color:var(--ink); font-size:1.2rem; letter-spacing:-.03em}
+.overlap{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:22px}
+.overlap article{background:#fff; border:1px solid var(--line); border-radius:18px; padding:18px 18px 16px; display:grid; gap:8px; align-content:start}
+.overlap h3{font-size:1.12rem; letter-spacing:-.02em}
+.overlap p{font-size:1.02rem; color:var(--ink)}
+.acc button.row{
+  font:inherit; text-align:left; cursor:pointer; width:100%;
+  background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:16px 18px;
+  display:flex; justify-content:space-between; gap:12px; align-items:center;
+}
+.acc button.row b{color:var(--ink); font-size:1.05rem}
+.acc button.row span{color:var(--emerald); font-weight:700}
+.acc .body{padding:0 18px 16px; color:var(--slate); display:none}
+.acc .item.open .body{display:block}
+.acc .item.open button.row{border-color:var(--green); border-bottom-left-radius:0; border-bottom-right-radius:0}
+.acc .item{background:var(--paper); border-radius:16px}
+.acc .item.open{border:1px solid var(--green); border-radius:16px}
+.acc .item.open button.row{border:0}
+.poster.playing .play,.poster.playing img{display:none}
+.brief{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:22px 22px 18px;
+  display:grid;
+  align-content:start;
+  gap:12px;
+}
+.brief h3{font-size:1.15rem; letter-spacing:-.02em}
+.brief p{font-size:.98rem}
+.phases{display:grid; gap:10px; margin:4px 0 0; padding:0; list-style:none}
+.phases li{display:grid; gap:2px; align-items:start}
+.phases strong{color:var(--green); font-size:.75rem; letter-spacing:.08em; text-transform:uppercase}
+
+.band{background:linear-gradient(180deg, rgba(229,239,232,.65), rgba(244,241,234,0)); border-block:1px solid rgba(30,86,49,.08)}
+.section{padding:72px 0}
+#journey,#video,#gap,#seat,#talk,#idea,#case{scroll-margin-top:84px}
+.case-picks{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px}
+.case-picks button{
+  font:inherit; cursor:pointer; border-radius:999px; padding:8px 14px;
+  background:#fff; border:1px solid var(--line); color:var(--ink); font-weight:600;
+}
+.case-picks button[aria-selected="true"]{background:var(--green); color:#F4F1EA; border-color:var(--green)}
+.viewer{
+  margin-top:14px; position:relative; border-radius:22px; overflow:hidden;
+  background:#10261a; border:1px solid var(--line);
+  width:min(100%, 720px); aspect-ratio:1/1;
+}
+.viewer canvas{display:block; width:100%; height:100%; object-fit:cover}
+.year-read{
+  position:absolute; left:16px; top:14px; margin:0;
+  font-size:2rem; font-weight:700; letter-spacing:-.04em; color:#fff;
+  text-shadow:0 2px 12px rgba(0,0,0,.55);
+}
+.earth-status{
+  position:absolute; left:16px; bottom:14px; margin:0; color:#F4F1EA; font-size:.92rem;
+}
+.scrub{display:flex; gap:10px; align-items:center; margin-top:12px}
+.scrub input{flex:1; accent-color:var(--green)}
+.scrub button{
+  font:inherit; cursor:pointer; border-radius:999px; padding:8px 12px;
+  background:#fff; border:1px solid var(--line); font-weight:600; color:var(--ink);
+}
+.case-copy{margin-top:16px; max-width:68ch}
+.case-copy h3{font-size:1.35rem; letter-spacing:-.03em}
+.case-copy p{margin-top:8px}
+.credit{margin-top:14px; color:var(--muted); font-size:.82rem; max-width:72ch}
+.idea-flag{
+  display:flex; gap:14px; align-items:center; text-decoration:none;
+  background:var(--green-deep); color:#F4F1EA;
+  border-radius:18px; padding:14px 16px; max-width:820px;
+  box-shadow:0 16px 36px rgba(20,61,35,.16);
+}
+.idea-flag b{
+  background:#F4F1EA; color:var(--green-deep);
+  border-radius:999px; padding:5px 10px;
+  font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; white-space:nowrap;
+}
+.idea-flag span{font-size:.98rem; line-height:1.4}
+.idea-stage{padding:8px 0 56px}
+.idea-head h2{font-size:clamp(2.2rem, 4.8vw, 3.5rem); max-width:16ch; letter-spacing:-.035em}
+.idea-head .lede{margin-top:14px; max-width:70ch; font-size:1.22rem; color:var(--ink); line-height:1.45}
+.lane{margin-top:34px}
+.lane-k{font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; font-weight:700; color:var(--emerald)}
+.lane-title{font-size:clamp(1.45rem, 2.4vw, 1.9rem); letter-spacing:-.03em; margin:6px 0 16px}
+.flow{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:22px; list-style:none; margin:0; padding:0}
+.flow li{
+  position:relative; background:#fff; border:1px solid var(--line); border-radius:22px;
+  padding:22px 18px 20px; display:grid; gap:10px; align-content:start; min-width:0;
+}
+.flow .n{font-size:.78rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--emerald)}
+.flow h3{font-size:1.28rem; letter-spacing:-.03em; line-height:1.15}
+.flow p{font-size:1.05rem; color:var(--slate); line-height:1.45}
+.flow > li:not(:last-child)::after{
+  content:"→"; position:absolute; right:-18px; top:26px; z-index:1;
+  width:30px; height:30px; border-radius:50%;
+  background:var(--green); color:#F4F1EA;
+  display:grid; place-items:center; font-size:.95rem;
+}
+.flow.build > li:last-child{background:var(--green); border-color:var(--green); color:#F4F1EA}
+.flow.build > li:last-child .n{color:#B7E0C8}
+.flow.build > li:last-child p{color:#E7F0EA}
+.chips{display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0; list-style:none}
+.chips li{font-size:.78rem; font-weight:650; background:var(--mist); color:var(--green-deep); border-radius:999px; padding:4px 9px}
+.bridge{
+  margin-top:22px; background:var(--green-deep); color:#F4F1EA;
+  border-radius:20px; padding:18px 22px; font-size:1.22rem; font-weight:600; line-height:1.4;
+}
+.shift{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:18px}
+.shift div{border-radius:22px; padding:22px; display:grid; gap:8px}
+.shift .now{background:#fff; border:1px solid var(--line)}
+.shift .next{background:var(--green); color:#E7F0EA}
+.shift b{font-size:.78rem; letter-spacing:.12em; text-transform:uppercase}
+.shift .now b{color:var(--emerald)}
+.shift .next b{color:#B7E0C8}
+.shift p{font-size:1.12rem; line-height:1.45}
+.shift .now p{color:var(--ink)}
+.shift .next p{color:#F4F1EA}
+.section h2{font-size:clamp(1.9rem, 3.4vw, 2.8rem); max-width:18ch}
+.intro{max-width:68ch; margin-top:14px; font-size:1.08rem}
+.intro.next{margin-top:14px}
+.quote{
+  margin:28px 0 8px;
+  padding:8px 0 8px 22px;
+  border-left:3px solid var(--green);
+  font-family:var(--serif);
+  font-size:clamp(1.45rem, 2.6vw, 2rem);
+  line-height:1.3;
+  color:var(--ink);
+  letter-spacing:-.02em;
+  max-width:24ch;
+}
+.split{display:grid; grid-template-columns:1.1fr .9fr; gap:28px; margin-top:22px}
+.note{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px;
+  display:grid;
+  gap:10px;
+  align-content:start;
+}
+.note span{font-size:.75rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--emerald)}
+
+.timeline{margin:34px 0 0; padding:0; list-style:none; display:grid; gap:18px}
+.timeline > li{
+  display:grid;
+  grid-template-columns:150px minmax(0,1fr);
+  gap:22px;
+  background:rgba(251,249,244,.78);
+  border:1px solid var(--line);
+  border-radius:22px;
+  padding:22px;
+}
+.when{display:grid; align-content:start; gap:6px}
+.when em{
+  font-style:normal;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  font-size:.75rem;
+  color:var(--emerald);
+}
+.when b{color:var(--ink); font-size:1.05rem; letter-spacing:-.02em}
+.chapter{display:grid; gap:12px}
+.chapter h3{font-size:1.55rem}
+.metrics{display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:10px; margin-top:4px}
+.metric{
+  background:var(--mist);
+  border-radius:14px;
+  padding:12px 12px 11px;
+  display:grid;
+  gap:3px;
+}
+.metric b{color:var(--green-deep); letter-spacing:-.03em; font-size:1.15rem; font-variant-numeric:tabular-nums}
+.metric span{color:var(--slate); font-size:.82rem; line-height:1.35}
+.bullets{margin:0; padding:0; list-style:none; display:grid; gap:8px}
+.bullets li{padding-left:16px; position:relative}
+.bullets li::before{content:""; position:absolute; left:0; top:.65em; width:7px; height:7px; border-radius:50%; background:var(--emerald)}
+
+.seat-list{margin:28px 0 0; padding:0; list-style:none; display:grid; gap:12px}
+.seat-list li{
+  display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr);
+  gap:18px;
+  padding:20px 22px;
+  border-radius:18px;
+  background:var(--paper);
+  border:1px solid var(--line);
+}
+.seat-list h3{font-size:1.12rem; margin-bottom:6px}
+.seat-list .ask{color:var(--muted); font-size:.95rem}
+.tag{display:block; font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--emerald); margin-bottom:6px}
+
+.pipe{
+  margin-top:28px;
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0,1fr));
+  gap:12px;
+}
+.pipe article{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:16px;
+  display:grid;
+  gap:8px;
+  align-content:start;
+}
+.pipe .n{
+  width:32px; height:32px; border-radius:50%;
+  display:grid; place-items:center;
+  background:var(--green); color:#F4F1EA;
+  font-size:.85rem; font-weight:700;
+}
+.pipe h3{font-size:1.02rem}
+.pipe p{font-size:.92rem}
+.result{
+  margin-top:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:18px 28px;
+  align-items:center;
+  background:var(--green);
+  color:#E7F0EA;
+  border-radius:18px;
+  padding:20px 22px;
+}
+.result strong{display:block; color:#fff; font-size:clamp(2rem, 4vw, 3rem); letter-spacing:-.04em; line-height:.95}
+.result p{max-width:62ch; color:#E4EFE8}
+.fine{margin-top:10px; color:var(--muted); font-size:.85rem}
+
+.skills{display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; padding:0; list-style:none}
+.skills li{
+  background:var(--paper);
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:6px 12px;
+  font-size:.86rem;
+  font-weight:600;
+  color:var(--ink);
+}
+
+.close{padding:28px 0 80px}
+.close-card{
+  background:var(--green-deep);
+  color:#E7F0EA;
+  border-radius:28px;
+  padding:clamp(28px, 5vw, 56px);
+  display:grid;
+  gap:16px;
+  position:relative;
+  overflow:hidden;
+}
+.close-card::after{
+  content:"";
+  position:absolute;
+  right:-80px; bottom:-100px;
+  width:320px; height:320px; border-radius:50%;
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:0 0 0 40px rgba(255,255,255,.04), 0 0 0 80px rgba(255,255,255,.04);
+}
+.close-card h2{color:#F7F6F1; font-size:clamp(2rem, 4.4vw, 3.4rem); max-width:16ch; position:relative}
+.close-card p{max-width:62ch; font-size:1.12rem; position:relative}
+.close-card .btn{background:#F4F1EA; color:var(--green-deep); position:relative; width:max-content}
+.close-card .btn:hover{background:#fff}
+.hours{position:relative; color:#D5E6DB; font-size:.98rem}
+.contact-row{position:relative; display:flex; flex-wrap:wrap; gap:12px; align-items:center}
+.mail{
+  position:relative;
+  color:#fff;
+  font-weight:600;
+  text-underline-offset:3px;
+}
+footer{padding:0 0 28px; color:var(--muted); font-size:.9rem}
+footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
+
+@media (max-width:900px){
+  .stats,.pipe,.metrics{grid-template-columns:1fr 1fr}
+  .stat:nth-child(3),.stat:nth-child(4){border-top:1px solid var(--line)}
+  .stat:nth-child(odd){border-left:0}
+  .stage,.split,.seat-list li,.timeline > li,.facts,.shift,.overlap,.flow{grid-template-columns:1fr}
+  .flow > li:not(:last-child)::after{content:"↓"; right:auto; left:18px; top:auto; bottom:-18px}
+  .nav .wrap{align-items:flex-start; flex-direction:column; padding:10px 0; gap:8px}
+  .nav nav{width:100%; flex-wrap:wrap; row-gap:4px}
+  .nav nav a{padding:7px 10px; font-size:.86rem}
+  .scrub{flex-wrap:wrap}
+  .scrub input{flex:1 1 100%; min-width:0}
+  body{overflow-x:hidden}
+}
+@media (max-width:560px){
+  .wrap{width:min(var(--max), calc(100% - 28px))}
+  .stats,.metrics,.pipe{grid-template-columns:1fr}
+  .stat + .stat{border-left:0; border-top:1px solid var(--line)}
+  .hero{padding-top:28px}
+  h1{font-size:clamp(2.3rem, 12vw, 3.2rem)}
+  .close-card .btn,.hero-actions .btn{width:100%}
+  .idea-flag{flex-direction:column; align-items:flex-start}
+  .points li{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+}
+@media print{
+  .nav{display:none}
+  body{background:#fff}
+  .close-card{background:#fff; color:#000; border:1px solid #ccc}
+  .close-card h2,.close-card p{color:#000}
+}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1.5c1.2 2.4 3.6 3.6 3.6 6.4a3.6 3.6 0 1 1-7.2 0C4.4 5.1 6.8 3.9 8 1.5z" fill="#F4F1EA"/></svg></span>Adithya × Carbon Trail</a>
+    <nav aria-label="On this page">
+      <a href="#video">Video</a>
+      <a href="#idea">The idea</a>
+      <a href="#case">Why this</a>
+      <a href="#gap">The gap</a>
+      <a href="#journey">Journey</a>
+      <a href="#seat">The seat</a>
+      <a class="cta" href="#talk">Schedule</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <p class="prepared">Founder's Office · Customer Success &amp; Technical Project Manager</p>
+      <h1>Adithya Nair <span class="x">×</span> <span class="for">Carbon Trail</span></h1>
+      <p class="sub">Bridging technical data operations and strategic customer success.</p>
+      <div class="hero-actions">
+        <a class="btn" href="#video">Watch the video</a>
+        <a class="btn ghost" href="mailto:nairadithya02@gmail.com?subject=Carbon%20Trail%20%E2%80%94%20a%20conversation%20with%20Adithya">Schedule a conversation</a>
+      </div>
+      <a class="idea-flag" href="#idea"><b>My idea</b><span>The filing workflow I already run can pre-fill a listed supplier’s form. I came up with it. The steps are just below.</span></a>
+    </div>
+  </section>
+
+  <section class="film" id="video" aria-labelledby="filmh">
+    <div class="wrap">
+      <div class="film-head">
+        <p class="kicker">The pitch</p>
+        <h2 id="filmh">The Operational Journey: Bootstrapping, Scaling, and AI Execution</h2>
+      </div>
+      <div class="stage">
+        <figure class="player">
+          <button class="poster" id="play" type="button" aria-label="Play the video for Carbon Trail">
+            <img alt="" referrerpolicy="no-referrer" src="https://drive.google.com/thumbnail?id=1bXbXZBlFGFx8zlrkGau8x6FB7JvRLrIP&amp;sz=w1280">
+            <span class="play"><b aria-hidden="true">▶</b><span>Play the video</span></span>
+          </button>
+        </figure>
+        <aside class="brief">
+          <h3>Jump the video</h3>
+          <p>Three phases. Pick one and the page goes to that chapter.</p>
+          <ul class="jump">
+            <li><button type="button" data-jump="base" aria-current="true"><strong>01 · Foundation</strong><span>$35k market at 18. Buyers came back after 3 years.</span></button></li>
+            <li><button type="button" data-jump="scale"><strong>02 · Scale</strong><span>75% → 98% fill rate. ₹60 Cr → ₹120+ Cr.</span></button></li>
+            <li><button type="button" data-jump="esg"><strong>03 · Tech &amp; ESG</strong><span>Intent engine on SEC and ESG filings. 3× replies.</span></button></li>
+          </ul>
+        </aside>
+      </div>
+      <div class="stats" aria-label="Proof points">
+        <div class="stat"><b>$35k</b><span>International market bootstrapped at 18. One week of it was an $8,000 deal.</span></div>
+        <div class="stat"><b>75% → 98%</b><span>Fill rate across 24 distributors. Purchase orders in, supply actually out.</span></div>
+        <div class="stat"><b>₹60→120+ Cr</b><span>Annual business at Mysore Sandal during my tenure.</span></div>
+        <div class="stat"><b>3×</b><span>Reply rate from an intent engine I built on public SEC and ESG filings.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="idea-stage" id="idea" aria-labelledby="ideah">
+    <div class="wrap">
+      <div class="idea-head">
+        <p class="kicker">My idea</p>
+        <h2 id="ideah">Same engine. Pointed at the supplier file.</h2>
+        <p class="lede">I already run a four-step workflow on public filings. It finds a buyer and drafts an email I review before it sends. I came up with the next use myself. Run those same four steps on a listed supplier, and most of the form a brand is about to send is already written.</p>
+      </div>
+      <div class="lane">
+        <p class="lane-k">The workflow I run today</p>
+        <h3 class="lane-title">Public filing in. A reviewed email out.</h3>
+        <ol class="flow">
+          <li>
+            <span class="n">Step 1</span>
+            <h3>Read the filing</h3>
+            <p>Public sources only. The workflow starts from documents the company has already published.</p>
+            <ul class="chips"><li>Annual reports</li><li>SEC filings</li><li>Call transcripts</li><li>ESG disclosures</li></ul>
+          </li>
+          <li>
+            <span class="n">Step 2</span>
+            <h3>Pull the signal</h3>
+            <p>It finds the moment worth acting on, inside a document a person would otherwise skim.</p>
+          </li>
+          <li>
+            <span class="n">Step 3</span>
+            <h3>Name the person</h3>
+            <p>Who owns that problem, and what they have already said on the record.</p>
+          </li>
+          <li>
+            <span class="n">Step 4</span>
+            <h3>Draft, then I send</h3>
+            <p>A first email tied to the filing. I review every draft. Nothing goes out on its own. Reply rates tripled.</p>
+          </li>
+        </ol>
+      </div>
+
+      <p class="bridge">Same pages. Same read. I came up with a different handoff: a supplier form, instead of an email.</p>
+
+      <div class="lane">
+        <p class="lane-k">How I would build it for supplier data</p>
+        <h3 class="lane-title">Listed supplier in. A mostly written form out.</h3>
+        <ol class="flow build">
+          <li>
+            <span class="n">Step 1</span>
+            <h3>Match the supplier</h3>
+            <p>The brand names the supplier. If that company is listed, or sits under a listed parent, a filing with their name on it already exists.</p>
+          </li>
+          <li>
+            <span class="n">Step 2</span>
+            <h3>Read those same pages</h3>
+            <p>The same pass over the annual report, the SEC filing, and the ESG disclosure. This is the public company. It is a reading of what they already published.</p>
+          </li>
+          <li>
+            <span class="n">Step 3</span>
+            <h3>Pre-fill what is public</h3>
+            <p>Company-level lines land on the brand’s questions, each one tagged with its source. Site meters and SKU-level detail stay blank. A filing does not carry them.</p>
+          </li>
+          <li>
+            <span class="n">Step 4</span>
+            <h3>They confirm the rest</h3>
+            <p>The supplier corrects the public lines and types only the gaps. A person checks the source before it counts. What they have to give the brand drops by a lot.</p>
+          </li>
+        </ol>
+      </div>
+
+      <div class="shift">
+        <div class="now">
+          <b>Today</b>
+          <p>The form arrives empty. The supplier stalls, estimates, or sends nothing. Scope 3 inherits the guess.</p>
+        </div>
+        <div class="next">
+          <b>With this idea</b>
+          <p>The form arrives mostly written, and every proposed line names the filing it came from. The supplier finishes what was never public.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="case" aria-labelledby="caseh">
+    <p class="kicker">Why I want this</p>
+    <h2 id="caseh">This is the work I want to spend myself on.</h2>
+    <p class="intro">I can watch the same ground from 2002 to 2022. Cotton took the Aral Sea. A road took the forest in Pará. The Columbia Glacier became open water. Carbon Trail is the company that treats that as a measurement problem: go to the supplier, where the emissions actually sit, and come back with a number a brand can stand behind. That is why I am here.</p>
+    <div class="case-picks" role="tablist" aria-label="Places">
+      <button type="button" role="tab" data-place="aral" aria-selected="true">Aral Sea</button>
+      <button type="button" role="tab" data-place="para" aria-selected="false">Pará</button>
+      <button type="button" role="tab" data-place="ice" aria-selected="false">Columbia Glacier</button>
+    </div>
+    <div class="viewer">
+      <canvas id="earth" width="1024" height="1024" aria-label="Satellite view of the selected place"></canvas>
+      <p class="year-read" id="yearRead">2002</p>
+      <p class="earth-status" id="earthStatus">Loading the archive…</p>
+    </div>
+    <div class="scrub">
+      <button type="button" id="yearA">2002</button>
+      <input id="year" type="range" min="2002" max="2022" step="1" value="2002" aria-label="Year">
+      <button type="button" id="yearB">2022</button>
+      <button type="button" id="yearPlay">Play the years</button>
+    </div>
+    <div class="case-copy">
+      <h3 id="caseTitle">The cotton lake</h3>
+      <p id="caseText"></p>
+    </div>
+    <p class="credit">Imagery: Google Earth Timelapse (Google, Landsat, Copernicus), CC BY 4.0. Contains modified Copernicus Sentinel data (2015–2022). The published annual mosaic ends in 2022.</p>
+  </section>
+
+  <section class="band" id="gap" aria-labelledby="gaph">
+    <div class="section wrap">
+      <p class="kicker">Why this mission</p>
+      <h2 id="gaph">The report is the easy part. The supplier file is the job.</h2>
+      <p class="quote">If the data is an approximation, the decarbonization mission fails with it.</p>
+      <div class="facts">
+        <article class="fact"><b>The call I am already on</b><p>Founding SDR, US market, at IRIS. ESG disclosure is one of the products. Sustainability leaders can produce the report. They cannot get a supplier file they trust.</p></article>
+        <article class="fact"><b>Estée Lauder, same sentence</b><p>Reporting was not the struggle. Collection was. Scope 3 is where an estimate becomes the whole footprint.</p></article>
+        <article class="fact"><b>Why fashion, and past it</b><p>About 10% of global emissions. More than 90% of those sit in the supply chain. The same supplier-file failure shows up beyond apparel.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="journey" aria-labelledby="journeyh">
+    <p class="kicker">The proof</p>
+    <h2 id="journeyh">Three chapters. The points that matter.</h2>
+    <div class="chapters">
+      <article class="chapter" id="ch-base">
+        <h3>01 · Age 18</h3>
+        <ul class="points">
+          <li><b>$8,000</b><span>Closed in a single week, from scratch, at 18.</span></li>
+          <li><b>$35k</b><span>International secondary market. No team. No playbook.</span></li>
+          <li><b>6 countries</b><span>US, UK, Canada, Denmark, Australia, Singapore.</span></li>
+          <li><b>3 years later</b><span>Buyers searched for me by name. They came back for trust and a process.</span></li>
+          <li><b>The seat</b><span>Customer success, GTM, a point of view on the product, and hiring. That is why this video exists.</span></li>
+        </ul>
+      </article>
+      <article class="chapter" id="ch-scale">
+        <h3>02 · Mysore Sandal</h3>
+        <ul class="points">
+          <li><b>75% → 98%</b><span>Fill rate across 24 distributors. Purchase orders in, supply actually out.</span></li>
+          <li><b>₹60 → 120+ Cr</b><span>Annual business at Mysore Sandal during my tenure. Apr 2025 – Jul 2026.</span></li>
+          <li><b>12 people</b><span>On it every day, across 9 channels, all of India.</span></li>
+          <li><b>2 channels</b><span>Added, with 4 new SKUs on each channel.</span></li>
+          <li><b>6 locations</b><span>Opened, along with 4 new channel partners.</span></li>
+          <li><b>6 months</b><span>Data entry to key accounts. Zepto gave the brand a supply-chain award. References are available.</span></li>
+        </ul>
+      </article>
+      <article class="chapter" id="ch-esg">
+        <h3>03 · IRIS</h3>
+        <ul class="points">
+          <li><b>First SDR</b><span>Hired for the US market at IRIS. I wrote the GTM and run it in HubSpot.</span></li>
+          <li><b>3× replies</b><span>Claude and Hugging Face workflow on public filings. Now a pilot dashboard with management.</span></li>
+          <li><b>Public only</b><span>Annual reports, SEC filings, call transcripts, news, ESG disclosures. I review every draft before it sends.</span></li>
+          <li><b>The gap</b><span>Same line from sustainability leaders, including at Estée Lauder: the report is fine. The supplier file is not.</span></li>
+          <li><b>Next</b><span>Point that habit at supplier data, inside Carbon Trail’s product, with the team that owns ingestion.</span></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="band" id="seat" aria-labelledby="seath">
+    <div class="section wrap">
+      <p class="kicker">Mapped to the role</p>
+      <h2 id="seath">The seat is implementation, data judgement, and the relationship after go-live.</h2>
+      <p class="intro">Customer Success and Technical Project Manager, sitting with the founder on global fashion and retail accounts. High-stakes data. A number that has to hold up in a board pack. Here is the overlap, line by line.</p>
+      <div class="overlap">
+        <article>
+          <h3>Own kickoff through go-live</h3>
+          <p>24 distributors, 9 channels, a team of 12, every day. Fill rate moved from 75% to 98% because supply had to match the purchase order.</p>
+        </article>
+        <article>
+          <h3>Turn a messy file into a number</h3>
+          <p>I already structure dense SEC and ESG filings into a decision. At Mysore Sandal I lived in what was ordered, what shipped, and what the marketplace would list.</p>
+        </article>
+        <article>
+          <h3>Several accounts, one owner</h3>
+          <p>Government process, marketplace SLAs, and a US GTM I had to invent. I say where the work actually is before the date slips.</p>
+        </article>
+        <article>
+          <h3>Stay after go-live</h3>
+          <p>Buyers searched for me three years later. At IRIS, a workflow I built became a pilot the management team kept.</p>
+        </article>
+      </div>
+
+      <div class="pipe" aria-label="How the intent workflow runs">
+        <article>
+          <span class="n">1</span>
+          <h3>Read the public record</h3>
+          <p>Annual reports, quarterly filings, call transcripts, news, ESG disclosures. Public sources only.</p>
+        </article>
+        <article>
+          <span class="n">2</span>
+          <h3>Pull the signal</h3>
+          <p>The agentic workflow finds the buying moment inside a document a person would otherwise skim.</p>
+        </article>
+        <article>
+          <span class="n">3</span>
+          <h3>Name the person</h3>
+          <p>Who owns the pain, and what they are already on the record caring about.</p>
+        </article>
+        <article>
+          <span class="n">4</span>
+          <h3>Draft, then a human sends</h3>
+          <p>A first email tied to the signal. I review it. Nothing goes out unreviewed.</p>
+        </article>
+      </div>
+      <div class="result">
+        <strong>3× replies</strong>
+        <p>The engine tripled reply rates. It is now a pilot, and I am developing the dashboard with management so the wider team can use it. Same habit I would bring to supplier files: unstructured input, a structured decision, a person accountable for what gets sent or ingested.</p>
+      </div>
+      <p class="fine">The workflow reads public documents. It does not invent client data, and the emails stay in review before they are sent from HubSpot.</p>
+
+      <ul class="skills" aria-label="Tools and motions">
+        <li>GTM for a new market</li>
+        <li>Customer retention</li>
+        <li>Supply &amp; marketplace operations</li>
+        <li>Claude &amp; Hugging Face workflows</li>
+        <li>HubSpot</li>
+        <li>Stakeholder management</li>
+        <li>Amazon Ads &amp; Amazon DSP</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="close" id="talk" aria-labelledby="talkh">
+    <div class="wrap">
+      <div class="close-card">
+        <p class="kicker" style="color:#9DCFB4">The close</p>
+        <h2 id="talkh">Ready to build the standard for supply chain emissions.</h2>
+        <p>I have the technical baseline to understand Carbon Trail’s data integrations, the operational experience to manage complex enterprise deployments, and the sales DNA to drive adoption.</p>
+        <p class="hours">Based in India. I already take US meetings from 5:00 to 9:00 PM IST, which covers the ET morning and the late CET afternoon. I will stretch that window for the accounts that need it. Remote is the setup I want.</p>
+        <div class="contact-row">
+          <a class="btn" href="mailto:nairadithya02@gmail.com?subject=Carbon%20Trail%20%E2%80%94%20a%20conversation%20with%20Adithya">Schedule a conversation</a>
+          <a class="mail" href="mailto:nairadithya02@gmail.com">nairadithya02@gmail.com</a>
+          <a class="mail" href="https://www.linkedin.com/in/adithya-nair-0734281b8/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap">
+    <span>Adithya Nair · Prepared for Carbon Trail · November 2026</span>
+    <span>A brief for this role. The general portfolio stays separate.</span>
+  </div>
+</footer>
+<script>
+(function(){
+  var play = document.getElementById("play");
+  play.addEventListener("click", function(){
+    if(play.classList.contains("playing")) return;
+    play.classList.add("playing");
+    play.setAttribute("aria-label", "Brief is playing");
+    play.innerHTML = '<iframe src="https://drive.google.com/file/d/1bXbXZBlFGFx8zlrkGau8x6FB7JvRLrIP/preview" title="Adithya Nair — video for Carbon Trail" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+  });
+  document.querySelectorAll("[data-jump]").forEach(function(b){
+    b.addEventListener("click", function(){
+      var name = b.getAttribute("data-jump");
+      document.querySelectorAll("[data-jump]").forEach(function(x){
+        if(x.getAttribute("data-jump") === name) x.setAttribute("aria-current", "true");
+        else x.removeAttribute("aria-current");
+      });
+      var target = document.getElementById("ch-" + name);
+      if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  });
+  var links = Array.prototype.slice.call(document.querySelectorAll('.nav nav a'));
+  var targets = links.map(function(a){ return document.querySelector(a.getAttribute('href')); });
+  function onScroll(){
+    var y = window.scrollY + 120, cur = -1;
+    targets.forEach(function(t, i){ if(t && t.offsetTop <= y) cur = i; });
+    links.forEach(function(a, i){ a.classList.toggle('active', i === cur); });
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  var SRC = "https://storage.googleapis.com/earthengine-timelapse/2023/earth/20230206/";
+  var PLACES = {
+    aral: {
+      z:7, x:84, y:45, cols:2, rows:2,
+      title: "The cotton lake",
+      text: "The rivers that fed the Aral Sea were turned onto cotton. The southern sea dried into a salt flat. A dam finished in 2005 held water in the north, and that smaller sea came back. The south did not. A supply chain did this. A decision put part of it back."
+    },
+    para: {
+      z:9, x:176, y:265, cols:2, rows:2,
+      title: "The road through the canopy",
+      text: "This is BR-163 at Novo Progresso, in Pará. In 2002 it is still mostly forest, with a thin line of clearing along the road. By 2022 that line is a wide field of farms. The canopy does not come back while the road and the farms stay."
+    },
+    ice: {
+      z:11, x:186, y:581, cols:2, rows:2,
+      title: "Ice that became a bay",
+      text: "Columbia Glacier, Alaska, pulled back up its fjord across these twenty years. Ice that filled the frame is open water. That ice does not return because a report was filed. It returns if the warming slows."
+    }
+  };
+  var canvas = document.getElementById("earth");
+  var ctx = canvas.getContext("2d");
+  var yearInput = document.getElementById("year");
+  var yearRead = document.getElementById("yearRead");
+  var earthStatus = document.getElementById("earthStatus");
+  var caseTitle = document.getElementById("caseTitle");
+  var caseText = document.getElementById("caseText");
+  var tiles = [];
+  var placeId = "aral";
+  var generation = 0;
+  var playing = 0;
+
+  function setYearLabel(year){
+    yearRead.textContent = String(year);
+    yearInput.value = String(year);
+  }
+  function loadPlace(id){
+    placeId = id;
+    window.clearInterval(playing);
+    playing = 0;
+    document.getElementById("yearPlay").textContent = "Play the years";
+    document.querySelectorAll("[data-place]").forEach(function(b){
+      b.setAttribute("aria-selected", b.getAttribute("data-place") === id ? "true" : "false");
+    });
+    var p = PLACES[id];
+    caseTitle.textContent = p.title;
+    caseText.textContent = p.text;
+    canvas.width = p.cols * 512;
+    canvas.height = p.rows * 512;
+    canvas.parentElement.style.aspectRatio = p.cols + " / " + p.rows;
+    earthStatus.textContent = "Loading the archive…";
+    tiles.forEach(function(t){ t.v.removeAttribute("src"); t.v.load(); });
+    tiles = [];
+    var token = ++generation;
+    var arm = false;
+    for(var r = 0; r < p.rows; r++){
+      for(var c = 0; c < p.cols; c++){
+        var v = document.createElement("video");
+        v.crossOrigin = "anonymous";
+        v.muted = true;
+        v.playsInline = true;
+        v.preload = "auto";
+        tiles.push({v:v, c:c, r:r});
+        v.addEventListener("loadeddata", function(){
+          if(!arm || token !== generation) return;
+          var ready = tiles.every(function(t){ return t.v.readyState >= 2; });
+          if(ready) showYear(Number(yearInput.value));
+        });
+        v.addEventListener("error", function(){
+          if(token === generation) earthStatus.textContent = "This frame did not load. Try the year again.";
+        });
+        v.src = SRC + p.z + "/" + (p.x + c) + "/" + (p.y + r) + ".webm";
+      }
+    }
+    arm = true;
+    if(tiles.every(function(t){ return t.v.readyState >= 2; })) showYear(Number(yearInput.value));
+  }
+  function showYear(year){
+    setYearLabel(year);
+    if(!tiles.length) return;
+    var token = ++generation;
+    var t = (year - 1984 + 0.45) / 5;
+    var left = tiles.length;
+    tiles.forEach(function(item){
+      function paint(){
+        if(token !== generation) return;
+        try { ctx.drawImage(item.v, item.c * 512, item.r * 512, 512, 512); }
+        catch(e){ earthStatus.textContent = "This frame did not load. Try the year again."; return; }
+        left--;
+        if(left === 0) earthStatus.textContent = "";
+      }
+      if(item.v.readyState >= 2 && Math.abs(item.v.currentTime - t) < 0.03){ paint(); return; }
+      function onSeek(){ item.v.removeEventListener("seeked", onSeek); paint(); }
+      item.v.addEventListener("seeked", onSeek);
+      try { item.v.currentTime = t; }
+      catch(e){ earthStatus.textContent = "This frame did not load. Try the year again."; }
+    });
+  }
+  document.querySelectorAll("[data-place]").forEach(function(b){
+    b.addEventListener("click", function(){ loadPlace(b.getAttribute("data-place")); });
+  });
+  yearInput.addEventListener("input", function(){
+    window.clearInterval(playing);
+    playing = 0;
+    document.getElementById("yearPlay").textContent = "Play the years";
+    showYear(Number(yearInput.value));
+  });
+  document.getElementById("yearA").addEventListener("click", function(){ showYear(2002); });
+  document.getElementById("yearB").addEventListener("click", function(){ showYear(2022); });
+  document.getElementById("yearPlay").addEventListener("click", function(){
+    if(playing){
+      window.clearInterval(playing);
+      playing = 0;
+      this.textContent = "Play the years";
+      return;
+    }
+    this.textContent = "Pause";
+    var y = Number(yearInput.value);
+    if(y >= 2022) y = 2001;
+    playing = window.setInterval(function(){
+      y += 1;
+      if(y > 2022){ window.clearInterval(playing); playing = 0; document.getElementById("yearPlay").textContent = "Play the years"; return; }
+      showYear(y);
+    }, 700);
+  });
+  loadPlace("aral");
+})();
+</script>
+</body>
+</html>
