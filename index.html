@@ -311,6 +311,86 @@ h1 .for{color:var(--green)}
 .shift p{font-size:1.12rem; line-height:1.45}
 .shift .now p{color:var(--ink)}
 .shift .next p{color:#F4F1EA}
+.pass{margin:22px 0 0; background:var(--paper); border:1px solid var(--line); border-radius:22px; padding:18px 18px 16px; max-width:100%}
+.pass figcaption{display:grid; gap:6px; margin:0 0 14px}
+.pass figcaption p{color:var(--ink); font-size:1.05rem; line-height:1.45; max-width:68ch}
+.pass-frame{
+  border-radius:16px; background:var(--bg); border:1px solid var(--line);
+  overflow:hidden; min-height:250px;
+}
+.pass-pane{display:none; padding:16px 16px 14px; gap:12px}
+.pass-board[data-pass="0"] .pane-0,
+.pass-board[data-pass="1"] .pane-1,
+.pass-board[data-pass="2"] .pane-2,
+.pass-board[data-pass="3"] .pane-3,
+.pass-board[data-pass="4"] .pane-4{display:grid}
+.pass-pane h3{font-size:clamp(1.35rem, 2.2vw, 1.7rem)}
+.stage-k{font-size:.75rem; letter-spacing:.12em; text-transform:uppercase; font-weight:700; color:var(--emerald)}
+.pass-pane .say{color:var(--slate); font-size:1rem; max-width:68ch}
+.src-row,.parse-row{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.src-card,.parse-card{
+  background:var(--paper); border:1px solid var(--line); border-radius:14px;
+  padding:12px 14px; display:grid; gap:4px; align-content:start; min-width:0;
+}
+.src-card span,.parse-card span{font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--emerald)}
+.src-card b,.parse-card b{font-family:var(--serif); font-weight:600; color:var(--ink); font-size:1.2rem; letter-spacing:-.02em}
+.src-card em,.parse-card em{font-style:normal; color:var(--muted); font-size:.92rem}
+.scan{height:6px; border-radius:99px; background:var(--mist); overflow:hidden; margin-top:6px}
+.scan i{display:block; height:100%; width:42%; border-radius:99px; background:var(--green); animation:pass-scan 1.8s ease-in-out infinite}
+@keyframes pass-scan{from{transform:translateX(-110%)} to{transform:translateX(250%)}}
+.ingest{display:grid; grid-template-columns:1fr auto 1fr; gap:10px; align-items:center}
+.chips{display:flex; flex-wrap:wrap; gap:6px; margin:0; padding:0}
+.chips li{
+  list-style:none; background:var(--paper); border:1px solid var(--line); color:var(--ink);
+  border-radius:999px; padding:5px 10px; font-size:.88rem; font-weight:600;
+}
+.hub{
+  width:116px; height:116px; border-radius:50%; background:var(--green); color:#F4F1EA;
+  display:grid; place-items:center; text-align:center; padding:12px;
+  font-family:var(--serif); font-size:1.05rem; line-height:1.15; letter-spacing:-.02em;
+}
+.filter-top{display:flex; flex-wrap:wrap; gap:10px}
+.filter-top div{
+  background:var(--paper); border:1px solid var(--line); border-radius:14px;
+  padding:10px 12px; min-width:0; display:grid; gap:2px;
+}
+.filter-top b{font-family:var(--serif); font-size:1.6rem; color:var(--ink); letter-spacing:-.03em; line-height:1}
+.filter-top span{color:var(--muted); font-size:.88rem}
+#passDots{width:100%; max-width:100%; height:148px; display:block}
+.form-card{background:var(--paper); border:1px solid var(--line); border-radius:16px; padding:14px; display:grid; gap:8px}
+.form-head{display:flex; flex-wrap:wrap; justify-content:space-between; gap:8px; align-items:center}
+.form-head b{font-family:var(--serif); font-size:1.25rem; color:var(--ink); font-weight:600}
+.ex-pill{
+  background:var(--mist); color:var(--green-deep); border-radius:999px;
+  padding:4px 10px; font-size:.78rem; font-weight:700; letter-spacing:.04em;
+}
+.form-lines{list-style:none; margin:0; padding:0; display:grid; gap:6px}
+.form-lines li{
+  display:flex; flex-wrap:wrap; justify-content:space-between; gap:4px 12px;
+  border:1px solid var(--line); border-radius:10px; padding:8px 10px; background:var(--bg);
+}
+.form-lines li.filled{background:#E7EFE9; border-color:#C9D9CE}
+.form-lines span{color:var(--ink); font-weight:600}
+.form-lines em{font-style:normal; color:var(--muted); font-size:.88rem}
+.form-foot{color:var(--slate); font-size:.95rem}
+.pass-rail{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px; list-style:none; margin:12px 0 0; padding:0}
+.pass-rail button{
+  width:100%; text-align:left; cursor:pointer; font:inherit; color:var(--ink);
+  background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:8px 10px;
+  font-size:.86rem; font-weight:600; line-height:1.3; min-width:0;
+}
+.pass-board[data-pass="0"] .pass-rail li:nth-child(1) button,
+.pass-board[data-pass="1"] .pass-rail li:nth-child(2) button,
+.pass-board[data-pass="2"] .pass-rail li:nth-child(3) button,
+.pass-board[data-pass="3"] .pass-rail li:nth-child(4) button,
+.pass-board[data-pass="4"] .pass-rail li:nth-child(5) button{
+  background:var(--green); color:#F4F1EA; border-color:var(--green);
+}
+@media (prefers-reduced-motion: reduce){
+  .scan i{animation:none; width:70%}
+  .pass-pane{display:grid}
+  .pass-frame{min-height:0}
+}
 .section h2{font-size:clamp(1.9rem, 3.4vw, 2.8rem); max-width:18ch}
 .intro{max-width:68ch; margin-top:14px; font-size:1.08rem}
 .intro.next{margin-top:14px}
@@ -487,7 +567,8 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
   .stats,.pipe,.metrics{grid-template-columns:1fr 1fr}
   .stat:nth-child(3),.stat:nth-child(4){border-top:1px solid var(--line)}
   .stat:nth-child(odd){border-left:0}
-  .stage,.split,.seat-list li,.timeline > li,.facts,.shift,.overlap,.flow{grid-template-columns:1fr}
+  .stage,.split,.seat-list li,.timeline > li,.facts,.shift,.overlap,.flow,.src-row,.parse-row,.ingest,.pass-rail{grid-template-columns:1fr}
+  .hub{width:88px; height:88px; font-size:.95rem}
   .flow > li:not(:last-child)::after{content:"↓"; right:auto; left:18px; top:auto; bottom:-18px}
   .nav .wrap{align-items:flex-start; flex-direction:column; padding:10px 0; gap:8px}
   .nav nav{width:100%; flex-wrap:wrap; row-gap:4px}
@@ -643,6 +724,94 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
             <p>The supplier corrects the public lines and types only the gaps. A person checks the source before it counts. What they have to give the brand drops by a lot.</p>
           </li>
         </ol>
+        <figure class="pass">
+          <figcaption>
+            <p class="lane-k">An example of the pass</p>
+            <p>This is an example of the pass, not a result from a live account. The counts are here so you can see the shape. I have not measured them, and the form does not send itself.</p>
+          </figcaption>
+          <div class="pass-board" data-pass="0">
+            <div class="pass-frame">
+              <div class="pass-pane pane-0">
+                <p class="stage-k">1 of 5 · Extract</p>
+                <h3>Extract public filings</h3>
+                <p class="say">A listed supplier, or its listed parent, already published these pages. The pass starts there.</p>
+                <div class="src-row">
+                  <div class="src-card">
+                    <span>Public source</span>
+                    <b>EDGAR / SEC</b>
+                    <em>Form 10-K, footnotes, and tables</em>
+                    <div class="scan" aria-hidden="true"><i></i></div>
+                  </div>
+                  <div class="src-card">
+                    <span>ESG disclosures</span>
+                    <b>Sustainability PDFs</b>
+                    <em>CDP, CSRD, and the report they filed</em>
+                    <div class="scan" aria-hidden="true"><i></i></div>
+                  </div>
+                </div>
+              </div>
+              <div class="pass-pane pane-1">
+                <p class="stage-k">2 of 5 · Ingest</p>
+                <h3>Ingest the unstructured pages</h3>
+                <p class="say">PDFs, footnotes, and tables go into the same read I already run on a filing.</p>
+                <div class="ingest">
+                  <ul class="chips">
+                    <li>10-K</li><li>Footnotes</li><li>Tables</li>
+                  </ul>
+                  <div class="hub">One read</div>
+                  <ul class="chips">
+                    <li>ESG PDF</li><li>CDP</li><li>CSRD</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="pass-pane pane-2">
+                <p class="stage-k">3 of 5 · Parse</p>
+                <h3>Parse, match, and cite</h3>
+                <p class="say">A company-level line can be proposed only when the page names that supplier, or the listed parent, and the line can point back to the page.</p>
+                <div class="parse-row">
+                  <div class="parse-card"><span>Read</span><b>SEC tables</b><em>Pull the company total out of the 10-K</em></div>
+                  <div class="parse-card"><span>Read</span><b>ESG pages</b><em>Same pass over the disclosure</em></div>
+                  <div class="parse-card"><span>Match</span><b>The listed name</b><em>Supplier, or the parent that files</em></div>
+                  <div class="parse-card"><span>Cite</span><b>Page and line</b><em>Every proposed line names its source</em></div>
+                </div>
+              </div>
+              <div class="pass-pane pane-3">
+                <p class="stage-k">4 of 5 · Filter · example</p>
+                <h3>Five hundred points, as an example</h3>
+                <p class="say">Three hundred can be proposed from the filing. Two hundred stay open. Site meters and SKU-level detail stay in the open set, because a filing does not carry them.</p>
+                <div class="filter-top">
+                  <div><b>300</b><span>example · proposed from the filing</span></div>
+                  <div><b>200</b><span>example · still blank</span></div>
+                </div>
+                <canvas id="passDots" width="500" height="148" aria-hidden="true"></canvas>
+              </div>
+              <div class="pass-pane pane-4">
+                <p class="stage-k">5 of 5 · Hand-off · example</p>
+                <h3>A form that is mostly written</h3>
+                <p class="say">The supplier confirms the gaps. A person checks the source before any line counts.</p>
+                <div class="form-card">
+                  <div class="form-head">
+                    <b>Supplier form</b>
+                    <span class="ex-pill">60% written, as an example</span>
+                  </div>
+                  <ul class="form-lines">
+                    <li class="filled"><span>Scope 1 and 2, company total</span><em>Proposed · SEC 10-K</em></li>
+                    <li><span>Facility electricity mix</span><em>Blank · site meter</em></li>
+                    <li><span>Purchased goods, SKU level</span><em>Blank · not in a filing</em></li>
+                  </ul>
+                  <p class="form-foot">The open lines are what the supplier still has to give. Nothing here goes out on its own.</p>
+                </div>
+              </div>
+            </div>
+            <ol class="pass-rail">
+              <li><button type="button" data-pass-go="0">1. Extract public filings</button></li>
+              <li><button type="button" data-pass-go="1">2. Ingest unstructured pages</button></li>
+              <li><button type="button" data-pass-go="2">3. Parse, match, and cite</button></li>
+              <li><button type="button" data-pass-go="3">4. 500-point filter, as an example</button></li>
+              <li><button type="button" data-pass-go="4">5. Mostly written form</button></li>
+            </ol>
+          </div>
+        </figure>
       </div>
 
       <div class="shift">
@@ -1110,6 +1279,51 @@ footer .wrap{display:flex; justify-content:space-between; gap:12px; flex-wrap:wr
     var route = L.polyline(spots.map(function(s){return s.ll;}), {color:"#1E4637", weight:2, opacity:.8}).addTo(map);
     map.fitBounds(route.getBounds(), {padding:[28, 28]});
     setTimeout(function(){ map.invalidateSize(); map.fitBounds(route.getBounds(), {padding:[28, 28]}); }, 300);
+  }
+  var board = document.querySelector(".pass-board");
+  var dots = document.getElementById("passDots");
+  if(dots){
+    var dctx = dots.getContext("2d");
+    var paintDots = function(){
+      var w = dots.clientWidth || 500, h = dots.clientHeight || 148;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dots.width = Math.round(w * dpr);
+      dots.height = Math.round(h * dpr);
+      dctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      dctx.clearRect(0, 0, w, h);
+      var cols = 25, rows = 20, n = 500;
+      var gx = w / cols, gy = h / rows;
+      var r = Math.max(1.6, Math.min(gx, gy) * 0.28);
+      for(var i = 0; i < n; i++){
+        var x = gx * ((i % cols) + 0.5);
+        var y = gy * (Math.floor(i / cols) + 0.5);
+        dctx.beginPath();
+        dctx.arc(x, y, r, 0, Math.PI * 2);
+        if(i < 300){ dctx.fillStyle = "#1E4637"; dctx.fill(); }
+        else { dctx.strokeStyle = "#0A3B2C"; dctx.lineWidth = 1.1; dctx.stroke(); }
+      }
+    };
+    paintDots();
+    window.addEventListener("resize", paintDots);
+  }
+  if(board && !window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    var passAt = 0;
+    var passTimer = 0;
+    var showPass = function(n){
+      passAt = n;
+      board.setAttribute("data-pass", String(n));
+    };
+    var arm = function(){
+      window.clearInterval(passTimer);
+      passTimer = window.setInterval(function(){ showPass((passAt + 1) % 5); }, 6500);
+    };
+    board.querySelectorAll("[data-pass-go]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        showPass(Number(btn.getAttribute("data-pass-go")));
+        arm();
+      });
+    });
+    arm();
   }
 })();
 </script>
