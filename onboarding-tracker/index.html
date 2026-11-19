@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client Onboarding Tracker – Carbon Trail concept</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#16231d;--muted:#5f6f68;--line:#dfe6e2;--bg:#f6f8f7;--card:#fff;--green:#2e8b57;--green-d:#1f4e3d;--blue:#5b8db8;--red:#d9534f;--amber:#e0a400;--ok:#3a9d5d;--grey:#9aa6a0}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);font-size:14px}
+header{background:var(--green-d);color:#fff;padding:14px 20px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+header h1{font-size:17px;margin:0;font-weight:600}
+header small{opacity:.75;font-size:12px;display:block;font-weight:400}
+.hctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+select,input,button{font:inherit}
+header select{background:#fff;border:0;border-radius:6px;padding:6px 8px}
+.btn{border:1px solid var(--line);background:#fff;border-radius:6px;padding:6px 12px;cursor:pointer;color:var(--ink)}
+.btn.primary{background:var(--green);border-color:var(--green);color:#fff}
+.btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.4)}
+nav{display:flex;gap:4px;padding:0 16px;background:#fff;border-bottom:1px solid var(--line);overflow-x:auto}
+nav button{border:0;background:none;padding:12px 12px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;white-space:nowrap}
+nav button.on{color:var(--green-d);border-color:var(--green);font-weight:600}
+main{padding:18px;max-width:1200px;margin:0 auto}
+.grid{display:grid;gap:12px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+.kpi .v{font-size:24px;font-weight:700;margin-top:4px}
+.kpi .l{color:var(--muted);font-size:12px}
+.pill{display:inline-block;padding:2px 9px;border-radius:20px;font-size:12px;font-weight:600}
+.Red{background:#fbe3e2;color:#a3302c}.Amber{background:#fff3cc;color:#7a5a00}.Green{background:#e1f2e6;color:#1f6b3a}.Done{background:#e6eaee;color:#4a5560}
+h2{font-size:15px;margin:22px 0 10px}
+.sub{color:var(--muted);font-size:12px;margin:-4px 0 10px}
+table{width:100%;border-collapse:collapse;background:#fff}
+th,td{padding:8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+th{font-size:12px;color:var(--muted);font-weight:600;background:#fafcfb;position:sticky;top:0}
+td select,td input{border:1px solid var(--line);border-radius:5px;padding:4px 6px;background:#fff;max-width:100%}
+td input.num{width:80px}
+.scroll{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+.gantt{display:grid;font-size:12px;min-width:760px}
+.gantt .lbl{padding:6px 8px;border-bottom:1px solid var(--line);background:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gantt .wk{border-bottom:1px solid var(--line);border-left:1px solid #f0f3f1;position:relative;background:#fff}
+.gantt .hd{font-size:10px;color:var(--muted);text-align:center;padding:4px 0;background:#fafcfb}
+.bar{position:absolute;top:7px;bottom:7px;left:-1px;right:0}
+.bar.poc{background:var(--green)}.bar.roll{background:var(--blue)}
+.bar.s{border-top-left-radius:5px;border-bottom-left-radius:5px;left:2px}.bar.e{border-top-right-radius:5px;border-bottom-right-radius:5px;right:2px}
+.today{position:absolute;top:0;bottom:0;width:2px;background:var(--red);z-index:2}
+.form{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.form label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px}
+.form input{width:100%;border:1px solid var(--line);border-radius:6px;padding:7px;background:#fffbea}
+.cov{height:8px;background:#e8eeeb;border-radius:4px;overflow:hidden;min-width:70px}
+.cov i{display:block;height:100%;background:var(--green)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;align-items:center}
+.filters select{border:1px solid var(--line);border-radius:6px;padding:5px}
+code{background:#eef3f0;padding:2px 5px;border-radius:4px;font-size:12px;word-break:break-word}
+.note{font-size:12px;color:var(--muted)}
+.flow{display:flex;gap:8px;flex-wrap:wrap;align-items:stretch}
+.flow .card{flex:1;min-width:180px}
+.flow .arrow{align-self:center;color:var(--grey);font-size:20px}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;opacity:0;transition:.3s;pointer-events:none}
+.toast.show{opacity:1}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
+.modal.show{display:flex}
+.modal .card{max-width:420px;width:100%}
+.modal input{width:100%;padding:8px;border:1px solid var(--line);border-radius:6px;margin:8px 0 12px}
+@media(max-width:600px){main{padding:12px}.kpi .v{font-size:20px}}
+</style>
+</head>
+<body>
+<header>
+  <div><h1 id="title">Client Onboarding Tracker</h1><small>Concept by Adithya Nair for Carbon Trail · one template, any client</small></div>
+  <div class="hctl">
+    <select id="clientSel" aria-label="Client"></select>
+    <button class="btn ghost" id="newBtn">+ New client</button>
+    <a class="btn ghost" href="CarbonTrail_Onboarding_Tracker.xlsx" download style="text-decoration:none">Download Excel</a>
+  </div>
+</header>
+<nav id="tabs">
+  <button data-t="overview" class="on">Overview</button>
+  <button data-t="plan">Plan & setup</button>
+  <button data-t="tasks">Tasks</button>
+  <button data-t="data">Data requests</button>
+  <button data-t="logic">How it works (Excel)</button>
+</nav>
+<main id="view"></main>
+<div class="modal" id="modal"><div class="card"><b>New client</b><div class="note">Starts from the standard template: same phases and tasks, nothing done yet.</div><input id="newName" placeholder="Client name, e.g. Calida"><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn" id="cancelNew">Cancel</button><button class="btn primary" id="okNew">Create</button></div></div></div>
+<div class="toast" id="toast"></div>
+<script>
+// ---------- template (mirrors the Excel workbook) ----------
+const PHASES=[
+ {id:"P1",stage:"POC",name:"Kickoff & success criteria",ct:"CS & Technical PM",team:"Sustainability",start:()=>0,dur:()=>1},
+ {id:"P2",stage:"POC",name:"Connect data sources (APIs)",ct:"Integrations",team:"IT, Product",start:()=>0,dur:()=>2},
+ {id:"P3",stage:"POC",name:"Standardise & map data",ct:"Data",team:"Product, Procurement",start:()=>1,dur:()=>2},
+ {id:"P4",stage:"POC",name:"Calculate pilot footprints",ct:"Data",team:"Sustainability",start:s=>s.poc-2,dur:()=>1},
+ {id:"P5",stage:"POC",name:"Validate & POC readout (go / no-go)",ct:"CS & Technical PM",team:"Sustainability, Exec sponsor",start:s=>s.poc-1,dur:()=>1},
+ {id:"R1",stage:"Rollout",name:"Wave 1 – first category group live",ct:"Integrations, Data",team:"Product, Procurement",start:s=>s.poc,dur:s=>wave(s)},
+ {id:"R2",stage:"Rollout",name:"Wave 2 – next category group live",ct:"Data",team:"Product, Procurement",start:s=>s.poc+wave(s),dur:s=>wave(s)},
+ {id:"R3",stage:"Rollout",name:"Wave 3 – remaining categories + Scope 3 roll-up",ct:"Data",team:"Sustainability",start:s=>s.poc+2*wave(s),dur:s=>wave(s)},
+ {id:"R4",stage:"Rollout",name:"Reporting handover & BAU success plan",ct:"CS & Technical PM",team:"Sustainability",start:s=>s.poc+3*wave(s)-2,dur:()=>2}];
+const wave=s=>Math.max(1,Math.round(s.roll*52/12/3));
+const TASKS=[
+ ["T01","P1","Kickoff call: confirm sponsor and success criteria","Carbon Trail","Sustainability",1],
+ ["T02","P1","Agree POC scope: categories, suppliers, sample size","Carbon Trail","Sustainability, Product",3],
+ ["T03","P1","Share data request list and access needs","Carbon Trail","IT",4],
+ ["T04","P2","API access to PLM (product specs and BOM)","Client","IT",5],
+ ["T05","P2","Connect supplier data platform (e.g. Higg FEM via Worldly)","Carbon Trail","Procurement",8],
+ ["T06","P2","Purchase volumes feed from ERP (units bought)","Client","Procurement, Finance",10],
+ ["T07","P3","Map products, suppliers, facilities, activity to Carbon Trail model","Carbon Trail","Product",5],
+ ["T08","P3","Flag data gaps and agree proxies for missing inputs","Carbon Trail","Sustainability",10],
+ ["T09","P3","Supplier follow-up for missing primary data","Client","Procurement",13],
+ ["T10","P4","Run pilot product footprints (ISO 14067 / PEF)","Carbon Trail","Sustainability",4],
+ ["T11","P4","Pilot Scope 3 estimate (footprint × units bought)","Carbon Trail","Sustainability",6],
+ ["T12","P5","Review pilot results with sustainability team","Client","Sustainability",3],
+ ["T13","P5","POC readout and go / no-go for rollout","Carbon Trail","Exec sponsor",6],
+ ["T14","R1","Extend connections to Wave 1 categories","Carbon Trail","IT",7],
+ ["T15","R1","Train category and sourcing users","Carbon Trail","Product, Procurement",14],
+ ["T16","R2","Wave 2 categories live","Carbon Trail","Product",25],
+ ["T17","R2","Monthly steering review","Carbon Trail","Exec sponsor",20],
+ ["T18","R3","Wave 3 live; full Scope 3 roll-up","Carbon Trail","Sustainability",25],
+ ["T19","R4","Reporting outputs aligned to GHG Protocol","Carbon Trail","Sustainability",7],
+ ["T20","R4","Handover to BAU success plan","Carbon Trail","Sustainability",12]];
+const DATA_TPL=[["PLM – product specs and BOM","Product","Product / IT","API"],["Supplier data platform – facilities","Facility","Procurement","API"],["ERP – purchase orders (units bought)","Activity","Finance","API"],["Supplier master list","Supplier","Procurement","File upload"],["Traceability platform – Tier 2-4 links","Supplier","Procurement","API"]];
+const STATUSES=["Not started","In progress","Done","Blocked"], DSTAT=["Requested","Received","Mapped","Live"];
+
+function nextMonday(){const d=new Date();d.setHours(0,0,0,0);d.setDate(d.getDate()+((8-d.getDay())%7||7));return iso(d)}
+function iso(d){const p=n=>String(n).padStart(2,"0");return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())}
+function makeClient(name,sample){
+ const c={name,kickoff:nextMonday(),poc:4,roll:3,asof:iso(new Date()),
+  tasks:TASKS.map(t=>({id:t[0],ph:t[1],name:t[2],owner:t[3],team:t[4],off:t[5],status:"Not started"})),
+  data:DATA_TPL.map(r=>({sys:r[0],type:r[1],owner:r[2],conn:r[3],status:"Requested",exp:0,map:0}))};
+ if(sample){
+  c.kickoff="2026-12-07";c.asof="2026-12-28";
+  const st={T01:"Done",T02:"Done",T03:"Done",T04:"Done",T05:"Done",T06:"In progress",T07:"Done",T08:"In progress",T09:"Blocked",T10:"Done",T11:"In progress"};
+  c.tasks.forEach(t=>{if(st[t.id])t.status=st[t.id]});
+  c.tasks[4].name="Connect supplier data platform (Higg FEM via Worldly)";
+  c.data=[{sys:"PLM – product specs and BOM",type:"Product",owner:"Product / IT",conn:"API",status:"Mapped",exp:400,map:372},
+   {sys:"Higg FEM via Worldly – Tier 1-2 facilities",type:"Facility",owner:"Procurement",conn:"API",status:"Mapped",exp:120,map:96},
+   {sys:"ERP – purchase orders (units bought)",type:"Activity",owner:"Finance",conn:"API",status:"Received",exp:400,map:210},
+   {sys:"Supplier master list",type:"Supplier",owner:"Procurement",conn:"File upload",status:"Mapped",exp:150,map:141},
+   {sys:"Traceability platform – Tier 2-4 links",type:"Supplier",owner:"Procurement",conn:"API",status:"Requested",exp:150,map:0}];
+  c.sample=true;
+ }
+ return c;
+}
+// ---------- state ----------
+let S;
+try{S=JSON.parse(localStorage.getItem("ct-tracker-v1"))}catch(e){}
+if(!S||!S.clients){S={clients:[makeClient("Marks & Spencer",true)],cur:0}}
+const save=()=>{try{localStorage.setItem("ct-tracker-v1",JSON.stringify(S))}catch(e){}};
+const C=()=>S.clients[S.cur];
+let tab="overview", fOwner="All", fRag="All";
+
+// ---------- calculations (same rules as the workbook) ----------
+const D=s=>{const [y,m,d]=s.split("-").map(Number);return new Date(Date.UTC(y,m-1,d))};
+const add=(d,n)=>new Date(d.getTime()+n*864e5);
+const days=(a,b)=>Math.round((a-b)/864e5);
+const fmt=d=>d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",timeZone:"UTC"});
+const fmtY=d=>d.toLocaleDateString("en-GB",{day:"2-digit",month:"short",year:"numeric",timeZone:"UTC"});
+function plan(c){const s={poc:+c.poc||4,roll:+c.roll||3},k=D(c.kickoff);
+ return PHASES.map(p=>{const sw=p.start(s),w=p.dur(s),st=add(k,sw*7);return{...p,sw,w,st,en:add(st,w*7-1)}})}
+function calc(c){
+ const P=plan(c),asof=D(c.asof),byId=Object.fromEntries(P.map(p=>[p.id,p]));
+ const tasks=c.tasks.map(t=>{const due=add(byId[t.ph]?byId[t.ph].st:D(c.kickoff),+t.off||0);
+  const late=t.status==="Done"?0:Math.max(0,days(asof,due));
+  const rag=t.status==="Done"?"Done":(t.status==="Blocked"||late>0)?"Red":(days(due,asof)<=7?"Amber":"Green");
+  return{...t,due,late,rag}});
+ const done=tasks.filter(t=>t.status==="Done").length, blocked=tasks.filter(t=>t.status==="Blocked").length;
+ const overdue=tasks.filter(t=>t.late>0&&t.status!=="Blocked").length, soon=tasks.filter(t=>t.rag==="Amber").length;
+ const exp=c.data.reduce((a,r)=>a+(+r.exp||0),0), map=c.data.reduce((a,r)=>a+(+r.map||0),0);
+ const cur=P.filter(p=>p.st<=asof&&p.en>=asof);
+ const nxt=P.filter(p=>p.en>=asof).sort((a,b)=>a.en-b.en)[0];
+ const health=(blocked>0||overdue>2)?"Red":overdue>0?"Amber":"Green";
+ return{P,tasks,done,blocked,overdue,soon,exp,map,cov:exp?map/exp:0,cur,nxt,health,asof,
+  pocEnd:add(D(c.kickoff),(+c.poc)*7-1),golive:P[P.length-1].en}
+}
+// ---------- render ----------
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+function header(){$("#clientSel").innerHTML=S.clients.map((c,i)=>`<option value="${i}" ${i==S.cur?"selected":""}>${esc(c.name)}${c.sample?" (sample)":""}</option>`).join("");}
+function render(){header();const c=C(),k=calc(c);
+ document.querySelectorAll("#tabs button").forEach(b=>b.classList.toggle("on",b.dataset.t===tab));
+ $("#view").innerHTML=({overview,plan:planView,tasks:taskView,data:dataView,logic:logicView})[tab](c,k);bind(c);}
+function gantt(k){
+ const weeks=Math.max(...k.P.map(p=>p.sw+p.w)), k0=k.P[0].st;
+ const cols=`minmax(170px,240px) repeat(${weeks},minmax(26px,1fr))`;
+ let h=`<div class="gantt" style="grid-template-columns:${cols}"><div class="lbl hd" style="text-align:left">Phase</div>`;
+ for(let w=0;w<weeks;w++)h+=`<div class="wk hd">${fmt(add(k0,w*7)).replace(" ","<br>")}</div>`;
+ const tw=days(k.asof,k0)/7;
+ k.P.forEach(p=>{h+=`<div class="lbl" title="${esc(p.name)}"><b>${p.id}</b> ${esc(p.name)}</div>`;
+  for(let w=0;w<weeks;w++){const on=w>=p.sw&&w<p.sw+p.w;
+   let cell=on?`<div class="bar ${p.stage==="POC"?"poc":"roll"} ${w===p.sw?"s":""} ${w===p.sw+p.w-1?"e":""}"></div>`:"";
+   if(tw>=w&&tw<w+1)cell+=`<div class="today" style="left:${((tw-w)*100).toFixed(0)}%"></div>`;
+   h+=`<div class="wk">${cell}</div>`}});
+ return h+`</div>`}
+function overview(c,k){
+ return `${c.sample?`<div class="note" style="margin-bottom:10px">Sample client. Systems, volumes and statuses are illustrative, not real ${esc(c.name)} data.</div>`:""}
+ <div class="grid kpis">
+  <div class="card kpi"><div class="l">Overall health</div><div class="v"><span class="pill ${k.health}" style="font-size:16px">${k.health}</span></div></div>
+  <div class="card kpi"><div class="l">Tasks complete</div><div class="v">${Math.round(k.done/k.tasks.length*100)}%</div><div class="l">${k.done} of ${k.tasks.length}</div></div>
+  <div class="card kpi"><div class="l">Overdue · Blocked</div><div class="v">${k.overdue} · ${k.blocked}</div><div class="l">${k.soon} due in next 7 days</div></div>
+  <div class="card kpi"><div class="l">Data coverage</div><div class="v">${Math.round(k.cov*100)}%</div><div class="l">${(k.exp-k.map).toLocaleString()} records on proxy</div></div>
+  <div class="card kpi"><div class="l">Next milestone</div><div class="v" style="font-size:15px">${k.nxt?esc(k.nxt.name):"Complete"}</div><div class="l">${k.nxt?fmtY(k.nxt.en):""}</div></div>
+  <div class="card kpi"><div class="l">POC end · Go-live</div><div class="v" style="font-size:16px">${fmt(k.pocEnd)} · ${fmtY(k.golive)}</div><div class="l">Status as of ${fmtY(k.asof)}</div></div>
+ </div>
+ <h2>Plan on a page</h2><div class="sub"><span style="color:var(--green)">■</span> POC &nbsp; <span style="color:var(--blue)">■</span> Rollout &nbsp; <span style="color:var(--red)">|</span> status date</div>
+ <div class="scroll">${gantt(k)}</div>
+ <h2>Needs attention</h2>
+ ${attn(k)}`}
+function attn(k){const r=k.tasks.filter(t=>t.rag==="Red"||t.rag==="Amber").sort((a,b)=>b.late-a.late);
+ if(!r.length)return`<div class="card note">Nothing late or due this week.</div>`;
+ return`<div class="scroll"><table><tr><th>Task</th><th>Owner</th><th>Due</th><th>Status</th><th>RAG</th></tr>${r.map(t=>`<tr><td><b>${t.id}</b> ${esc(t.name)}</td><td>${esc(t.owner)} · ${esc(t.team)}</td><td>${fmt(t.due)}${t.late?` <span class="note">(${t.late}d late)</span>`:""}</td><td>${t.status}</td><td><span class="pill ${t.rag}">${t.rag}</span></td></tr>`).join("")}</table></div>`}
+function planView(c,k){
+ return`<h2 style="margin-top:0">Setup</h2><div class="sub">Change any input and every date, bar and score updates.</div>
+ <div class="grid form card">
+  <div><label>Client name</label><input data-f="name" value="${esc(c.name)}"></div>
+  <div><label>Kickoff date</label><input type="date" data-f="kickoff" value="${c.kickoff}"></div>
+  <div><label>POC length (weeks)</label><input type="number" min="3" max="12" data-f="poc" value="${c.poc}"></div>
+  <div><label>Rollout length (months)</label><input type="number" min="1" max="12" data-f="roll" value="${c.roll}"></div>
+  <div><label>Status date</label><input type="date" data-f="asof" value="${c.asof}"></div>
+ </div>
+ <h2>Gantt</h2><div class="scroll">${gantt(k)}</div>
+ <h2>Phases</h2><div class="scroll"><table><tr><th>ID</th><th>Phase</th><th>Carbon Trail lead</th><th>Client team</th><th>Start</th><th>End</th><th>Weeks</th></tr>
+ ${k.P.map(p=>`<tr><td><b>${p.id}</b></td><td>${esc(p.name)}</td><td>${p.ct}</td><td>${p.team}</td><td>${fmt(p.st)}</td><td>${fmtY(p.en)}</td><td>${p.w}</td></tr>`).join("")}</table></div>`}
+function taskView(c,k){
+ const rows=k.tasks.map((t,i)=>({t,i})).filter(({t})=>(fOwner==="All"||t.owner===fOwner)&&(fRag==="All"||t.rag===fRag));
+ return`<div class="filters"><span class="note">Owner</span><select id="fo">${["All","Carbon Trail","Client"].map(o=>`<option ${o===fOwner?"selected":""}>${o}</option>`).join("")}</select>
+ <span class="note">RAG</span><select id="fr">${["All","Red","Amber","Green","Done"].map(o=>`<option ${o===fRag?"selected":""}>${o}</option>`).join("")}</select>
+ <span style="flex:1"></span><button class="btn" id="addTask">+ Add task</button><button class="btn" id="copyCsv">Copy as CSV</button></div>
+ <div class="scroll"><table><tr><th>ID</th><th>Phase</th><th>Task</th><th>Owner</th><th>Client team</th><th>Due</th><th>Status</th><th>Late</th><th>RAG</th></tr>
+ ${rows.map(({t,i})=>`<tr><td><b>${t.id}</b></td><td><select data-t="${i}" data-k="ph">${PHASES.map(p=>`<option ${p.id===t.ph?"selected":""}>${p.id}</option>`).join("")}</select></td>
+ <td><input data-t="${i}" data-k="name" value="${esc(t.name)}" style="width:100%;min-width:220px"></td>
+ <td><select data-t="${i}" data-k="owner">${["Carbon Trail","Client"].map(o=>`<option ${o===t.owner?"selected":""}>${o}</option>`).join("")}</select></td>
+ <td><input data-t="${i}" data-k="team" value="${esc(t.team)}" style="width:140px"></td>
+ <td>${fmt(t.due)}</td>
+ <td><select data-t="${i}" data-k="status">${STATUSES.map(o=>`<option ${o===t.status?"selected":""}>${o}</option>`).join("")}</select></td>
+ <td>${t.late||"–"}</td><td><span class="pill ${t.rag}">${t.rag}</span></td></tr>`).join("")}</table></div>
+ <p class="note">Due date = phase start + days offset, so tasks move when the plan moves. RAG: Done if done · Red if blocked or past due · Amber if due within 7 days · otherwise Green.</p>`}
+function dataView(c,k){
+ return`<div class="sub" style="margin:0 0 10px">Carbon Trail connects to the systems that already hold the data, standardises it into product, supplier, facility and activity, and flags missing inputs with a proxy. This tab tracks each source.</div>
+ <div class="scroll"><table><tr><th>Source system</th><th>Data type</th><th>Client owner</th><th>Connection</th><th>Status</th><th>Expected</th><th>Mapped</th><th>Coverage</th><th>On proxy</th></tr>
+ ${c.data.map((r,i)=>{const cv=r.exp?Math.min(1,r.map/r.exp):0;return`<tr>
+ <td><input data-d="${i}" data-k="sys" value="${esc(r.sys)}" style="min-width:200px;width:100%"></td>
+ <td><select data-d="${i}" data-k="type">${["Product","Supplier","Facility","Activity"].map(o=>`<option ${o===r.type?"selected":""}>${o}</option>`).join("")}</select></td>
+ <td><input data-d="${i}" data-k="owner" value="${esc(r.owner)}" style="width:110px"></td>
+ <td><select data-d="${i}" data-k="conn">${["API","File upload"].map(o=>`<option ${o===r.conn?"selected":""}>${o}</option>`).join("")}</select></td>
+ <td><select data-d="${i}" data-k="status">${DSTAT.map(o=>`<option ${o===r.status?"selected":""}>${o}</option>`).join("")}</select></td>
+ <td><input class="num" type="number" min="0" data-d="${i}" data-k="exp" value="${r.exp}"></td>
+ <td><input class="num" type="number" min="0" data-d="${i}" data-k="map" value="${r.map}"></td>
+ <td><div class="cov"><i style="width:${cv*100}%"></i></div><span class="note">${Math.round(cv*100)}%</span></td>
+ <td>${Math.max(0,r.exp-r.map).toLocaleString()}</td></tr>`}).join("")}
+ <tr><td><b>Total</b></td><td colspan="4"></td><td><b>${k.exp.toLocaleString()}</b></td><td><b>${k.map.toLocaleString()}</b></td><td><b>${Math.round(k.cov*100)}%</b></td><td><b>${(k.exp-k.map).toLocaleString()}</b></td></tr></table></div>
+ <p><button class="btn" id="addData">+ Add source</button></p>`}
+function logicView(){
+ const rows=[["Phase start","Plan!H","=Setup!$B$5+F4*7","Kickoff date + start week × 7"],
+ ["Phase end","Plan!I","=H4+G4*7-1","Start + weeks × 7 − 1"],
+ ["Rollout wave length","Setup!B13","=MAX(1,ROUND(B7*52/12/3,0))","Rollout months split into 3 waves"],
+ ["Task due date","Tasks!G","=INDEX(Plan!$H$4:$H$12,MATCH(B2,Plan!$A$4:$A$12,0))+F2","Look up the phase start, add the task's day offset"],
+ ["Days late","Tasks!I",'=IF(H2="Done",0,MAX(0,Setup!$B$8-G2))',"Zero if done, otherwise status date − due date"],
+ ["RAG","Tasks!J",'=IF(H2="Done","Done",IF(OR(H2="Blocked",I2>0),"Red",IF(G2-Setup!$B$8<=7,"Amber","Green")))',"Nested IF on status, lateness and days to due"],
+ ["Data coverage","Data Requests!H","=IFERROR(G2/F2,0)","Records mapped ÷ expected"],
+ ["Gantt cell","Plan!J4…","=IF(AND(J$3<=$I4,J$3+6>=$H4),1,\"\")","1 if the week overlaps the phase; conditional formatting colours it"],
+ ["Next milestone","Dashboard!B11",'=MINIFS(Plan!$I$4:$I$12,Plan!$I$4:$I$12,">="&Setup!$B$8)',"Earliest phase end on or after the status date"],
+ ["Overall health","Dashboard!B14",'=IF(OR(B6>0,B5>2),"Red",IF(B5>0,"Amber","Green"))',"Red if anything blocked or 3+ overdue"]];
+ return`<h2 style="margin-top:0">One model, two views</h2>
+ <div class="flow"><div class="card"><b>Excel workbook</b><div class="note">Setup · Plan · Tasks · Data Requests · Dashboard. Blue cells are inputs; everything else is a formula. Auditable by anyone on the team.</div></div><div class="arrow">→</div>
+ <div class="card"><b>Same rules in this portal</b><div class="note">The client-facing view: status dropdowns, live Gantt, health score. Each calculation below is the Excel formula ported line for line.</div></div><div class="arrow">→</div>
+ <div class="card"><b>Weekly client call</b><div class="note">Open Overview, walk the red and amber items, agree owners. Copy the task list as CSV back into Excel.</div></div></div>
+ <p><a class="btn primary" href="CarbonTrail_Onboarding_Tracker.xlsx" download style="text-decoration:none;display:inline-block">Download the Excel workbook</a></p>
+ <h2>Formula map</h2><div class="scroll"><table><tr><th>Calculation</th><th>Cell</th><th>Excel formula</th><th>In plain words</th></tr>
+ ${rows.map(r=>`<tr><td><b>${r[0]}</b></td><td>${esc(r[1])}</td><td><code>${esc(r[2])}</code></td><td>${r[3]}</td></tr>`).join("")}</table></div>
+ <h2>Reset</h2><p class="note">Your edits are kept in this browser only. <button class="btn" id="reset">Reset to sample data</button></p>`}
+// ---------- events ----------
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1800)}
+function bind(c){
+ document.querySelectorAll("[data-f]").forEach(el=>el.onchange=()=>{let v=el.value;if(el.type==="number")v=Math.max(+el.min||1,+v||1);if(el.type==="date"&&!v)return render();c[el.dataset.f]=v;save();render()});
+ document.querySelectorAll("[data-t][data-k]").forEach(el=>el.onchange=()=>{c.tasks[+el.dataset.t][el.dataset.k]=el.value;save();render()});
+ document.querySelectorAll("[data-d]").forEach(el=>el.onchange=()=>{const r=c.data[+el.dataset.d];r[el.dataset.k]=el.type==="number"?Math.max(0,+el.value||0):el.value;save();render()});
+ const fo=$("#fo");if(fo){fo.onchange=()=>{fOwner=fo.value;render()};$("#fr").onchange=e=>{fRag=e.target.value;render()}}
+ const at=$("#addTask");if(at)at.onclick=()=>{const n=c.tasks.length+1;c.tasks.push({id:"T"+String(n).padStart(2,"0"),ph:"P1",name:"New task",owner:"Carbon Trail",team:"",off:0,status:"Not started"});save();render()};
+ const ad=$("#addData");if(ad)ad.onclick=()=>{c.data.push({sys:"New source",type:"Product",owner:"",conn:"API",status:"Requested",exp:0,map:0});save();render()};
+ const cc=$("#copyCsv");if(cc)cc.onclick=async()=>{const k=calc(c);const q=v=>`"${String(v).replace(/"/g,'""')}"`;
+  const csv=[["ID","Phase","Task","Owner","Client team","Due","Status","Days late","RAG"].join(",")].concat(k.tasks.map(t=>[t.id,t.ph,q(t.name),t.owner,q(t.team),t.due.toISOString().slice(0,10),t.status,t.late,t.rag].join(","))).join("\n");
+  try{await navigator.clipboard.writeText(csv);toast("Copied – paste into Excel")}catch(e){toast("Copy not allowed here")}};
+ const rs=$("#reset");if(rs)rs.onclick=()=>{S={clients:[makeClient("Marks & Spencer",true)],cur:0};save();tab="overview";render();toast("Reset")};
+}
+$("#tabs").onclick=e=>{if(e.target.dataset.t){tab=e.target.dataset.t;render()}};
+$("#clientSel").onchange=e=>{S.cur=+e.target.value;save();render()};
+$("#newBtn").onclick=()=>{$("#modal").classList.add("show");$("#newName").value="";$("#newName").focus()};
+$("#cancelNew").onclick=()=>$("#modal").classList.remove("show");
+$("#okNew").onclick=()=>{const n=$("#newName").value.trim();if(!n)return;S.clients.push(makeClient(n,false));S.cur=S.clients.length-1;save();$("#modal").classList.remove("show");tab="plan";render();toast("Created from template")};
+render();
+</script>
+</body>
+</html>
