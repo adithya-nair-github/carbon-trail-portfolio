@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Onboarding snapshot · Carbon Trail concept</title>
+<link rel="stylesheet" href="styles.css?v=5">
+</head>
+<body>
+<header class="top no-print">
+  <div class="brand">
+    <span class="mark">Carbon Trail</span>
+    <span class="brand-sub">Onboarding snapshot · concept by Adithya Nair</span>
+  </div>
+  <div class="top-actions">
+    <label class="client-pick">
+      <span class="client-copy">
+        <span class="client-kicker">Account</span>
+        <span class="client-hint">Any client, same plan</span>
+      </span>
+      <select id="clientSel" aria-label="Account"></select>
+    </label>
+    <button type="button" class="btn add" id="newBtn">New account</button>
+    <button type="button" class="btn quiet" id="resetBtn">Reset sample</button>
+  </div>
+</header>
+<nav class="nav no-print" id="nav"></nav>
+<main id="app"></main>
+<div class="modal no-print" id="modal" hidden>
+  <form class="card modal-card" id="newForm">
+    <h2>New account</h2>
+    <p class="note">Starts from the same phases and tasks. Nothing is marked done. Label it as illustrative if you show it.</p>
+    <label>Account name
+      <input id="newName" required placeholder="Fictional brand name">
+    </label>
+    <div class="row-actions">
+      <button type="button" class="btn" id="cancelNew">Cancel</button>
+      <button type="submit" class="btn primary">Create</button>
+    </div>
+  </form>
+</div>
+<script src="app.js?v=5"></script>
+</body>
+</html>
