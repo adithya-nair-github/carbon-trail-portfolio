@@ -404,31 +404,11 @@ function planIssues(c, k) {
       action: team(t.team) + ": unblock " + t.name
     });
   });
-  k.tasks.filter((t) => t.late > 0 && t.status !== "Blocked").sort((a, b) => b.late - a.late).forEach((t) => {
+  k.tasks.filter((t) => t.status !== "Done" && t.status !== "Blocked" && t.late > 0).sort((a, b) => b.late - a.late).forEach((t) => {
     items.push({
       team: team(t.team),
       line: team(t.team) + ": " + t.name + " is " + t.late + " day" + (t.late === 1 ? "" : "s") + " late. Due " + fmt(t.due) + ".",
       action: team(t.team) + ": close " + t.name
-    });
-  });
-  (c.data || []).forEach((r) => {
-    const stats = rowStats(r);
-    if (stats.exp > 0 && stats.map < stats.exp) {
-      items.push({
-        team: team(r.owner),
-        line: team(r.owner) + ": " + r.sys + " is not fully mapped (" + stats.map.toLocaleString() + " of " + stats.exp.toLocaleString() + ", " + stats.proxy.toLocaleString() + " on proxy).",
-        action: team(r.owner) + ": finish mapping " + r.sys
-      });
-    }
-  });
-  const open = k.tasks.filter((t) => t.status !== "Done");
-  silentPeople(c).forEach((p) => {
-    const hit = open.filter((t) => teamHit(p.team, t.team)).sort((a, b) => b.late - a.late)[0];
-    if (!hit) return;
-    items.push({
-      team: team(p.team),
-      line: team(p.team) + ": " + p.role + " has not been contacted in " + p.age + " days, while " + hit.name + " is still open. Due " + fmt(hit.due) + ".",
-      action: team(p.team) + ": contact " + p.role
     });
   });
   return items;
@@ -672,7 +652,7 @@ function viewToday() {
   const red = rows.filter((r) => r.k.health === "Red").length;
   return `<div class="stack">
     <p class="lede">Which account needs a move, and which team makes it.</p>
-    <p class="note">Plan colour is the weekly rule: Red if anything is blocked or three or more tasks are overdue, Yellow if any task is overdue, otherwise Green. Open urgencies are the blocked work, the late work, the proxy gap, and anyone quiet for 30 days.</p>
+    <p class="note">Plan colour is the weekly rule: Red if anything is blocked or three or more tasks are overdue, Yellow if any task is overdue, otherwise Green. Open urgencies are the blocked and overdue tasks.</p>
     <div class="kpis">
       ${kpi("Accounts", rows.length, "Open projects")}
       ${kpi("Plan colour Red", red, "Blocked, or 3+ overdue")}
@@ -712,12 +692,9 @@ function viewSnapshot(c, k) {
       <p>${pill(k.health)} <span class="note">${esc(healthRule(k))}</span></p>
     </section>
     <section class="card">
-      <h2>Open issues</h2>
-      <ol class="clean">${issues.map((item) => `<li>${esc(item.line)}</li>`).join("") || "<li>Nothing is blocked, late, unmapped, or sitting with someone quiet.</li>"}</ol>
-    </section>
-    <section class="card">
-      <h2>What to do next</h2>
-      <ol class="clean">${issues.slice(0, 3).map((item) => `<li>${esc(item.action)}</li>`).join("") || "<li>No open action. Confirm the next phase with the client team.</li>"}</ol>
+      <h2>Open urgencies</h2>
+      <p class="note">Updated from the task inputs</p>
+      <ol class="clean">${issues.map((item) => `<li>${esc(item.line)}</li>`).join("") || "<li>No task is blocked or overdue.</li>"}</ol>
     </section>
     <section class="card">
       <h2>Teams on this phase</h2>
@@ -980,7 +957,8 @@ function viewScore(c, k, sc) {
     <p class="lede">Project urgency ${sc.total} out of 100.</p>
     <div class="card">
       <h2>Open urgencies</h2>
-      <ul class="clean">${sc.urgencies.map((line) => `<li>${esc(line)}</li>`).join("") || "<li>Nothing is blocked, late, on a proxy, or sitting with someone quiet.</li>"}</ul>
+      <p class="note">Updated from the task inputs</p>
+      <ul class="clean">${sc.urgencies.map((line) => `<li>${esc(line)}</li>`).join("") || "<li>No task is blocked or overdue.</li>"}</ul>
     </div>
     <p class="note">Each line is 0 to 100. Points on the right are that line times its weight. Weights should add to 100. They currently add to ${sc.weightSum}. Plan colour is separate: it is ${labelRag(k.health)} (${esc(healthRule(k))}).</p>
     <div class="card form">
