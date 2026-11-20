@@ -108,7 +108,7 @@ function makeMS() {
   return {
     id: "ms",
     name: "Marks & Spencer",
-    kind: "Illustrative worked example. Not Marks & Spencer data.",
+    kind: "Worked example.",
     real: true,
     stage: "POC",
     owner: "Adithya Nair",
@@ -159,7 +159,7 @@ function makeNorthloom() {
   return {
     id: "northloom",
     name: "Northloom",
-    kind: "Fictional apparel brand. Not a Carbon Trail customer.",
+    kind: "Apparel brand.",
     real: false,
     stage: "Rollout",
     owner: "Adithya Nair",
@@ -1205,7 +1205,7 @@ function boot() {
     const id = "c" + Date.now();
     const kick = nextMonday();
     state.clients.push({
-      id, name, kind: "Illustrative. Created from the template in this browser.", real: false, stage: "POC", owner: "Adithya Nair",
+      id, name, kind: "Created from the template in this browser.", real: false, stage: "POC", owner: "Adithya Nair",
       kickoff: kick, poc: 4, roll: 3, asof: kick, contractStart: kick,
       licensed: 8, activeUsers: 0, lastLogin: kick, firstFootprint: "", csat: 0, nps: 0,
       tasks: blankTasks(), data: blankData(),
