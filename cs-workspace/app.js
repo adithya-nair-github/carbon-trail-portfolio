@@ -9,42 +9,40 @@ const VIEWS = [
   ["tasks", "Tasks"],
   ["data", "Data"],
   ["people", "People"],
-  ["score", "Score"],
-  ["renewal", "Renewal"]
+  ["score", "Urgency"]
 ];
 
 const PHASES = [
-  { id: "P1", stage: "POC", name: "Kickoff & success criteria", ct: "CS & Technical PM", team: "Sustainability", start: () => 0, dur: () => 1 },
-  { id: "P2", stage: "POC", name: "Connect data sources (APIs)", ct: "Integrations", team: "IT, Product", start: () => 0, dur: () => 2 },
-  { id: "P3", stage: "POC", name: "Standardise & map data", ct: "Data", team: "Product, Procurement", start: () => 1, dur: () => 2 },
-  { id: "P4", stage: "POC", name: "Calculate pilot footprints", ct: "Data", team: "Sustainability", start: (s) => s.poc - 2, dur: () => 1 },
-  { id: "P5", stage: "POC", name: "Validate & POC readout (go / no-go)", ct: "CS & Technical PM", team: "Sustainability, Exec sponsor", start: (s) => s.poc - 1, dur: () => 1 },
-  { id: "R1", stage: "Rollout", name: "Wave 1 – first category group live", ct: "Integrations, Data", team: "Product, Procurement", start: (s) => s.poc, dur: (s) => waveWeeks(s.roll) },
-  { id: "R2", stage: "Rollout", name: "Wave 2 – next category group live", ct: "Data", team: "Product, Procurement", start: (s) => s.poc + waveWeeks(s.roll), dur: (s) => waveWeeks(s.roll) },
-  { id: "R3", stage: "Rollout", name: "Wave 3 – remaining categories + Scope 3 roll-up", ct: "Data", team: "Sustainability", start: (s) => s.poc + 2 * waveWeeks(s.roll), dur: (s) => waveWeeks(s.roll) },
-  { id: "R4", stage: "Rollout", name: "Reporting handover & BAU success plan", ct: "CS & Technical PM", team: "Sustainability", start: (s) => s.poc + 3 * waveWeeks(s.roll) - 2, dur: () => 2 }
+  { id: "P1", stage: "POC", name: "Kick-off", ct: "Technical PM", team: "Plan A Sustainability", start: () => 0, dur: () => 1 },
+  { id: "P2", stage: "POC", name: "Connect", ct: "Integrations", team: "Product & Technical", start: () => 1, dur: () => 1 },
+  { id: "P3", stage: "POC", name: "Calculate", ct: "LCA and Data Science", team: "Product & Sourcing", start: () => 2, dur: () => 1 },
+  { id: "P4", stage: "POC", name: "Decide", ct: "Technical PM", team: "Plan A Sustainability", start: () => 3, dur: () => 1 },
+  { id: "R1", stage: "Rollout", name: "Connect live systems", ct: "Integrations", team: "IT & Security", start: () => 4, dur: () => 4 },
+  { id: "R2", stage: "Rollout", name: "Standardise and calculate", ct: "LCA and Data Science", team: "Product & Technical, Finance", start: () => 8, dur: () => 4 },
+  { id: "R3", stage: "Rollout", name: "Anomaly checks", ct: "Technical PM", team: "Plan A Sustainability", start: () => 12, dur: () => 4 },
+  { id: "R4", stage: "Rollout", name: "Enablement and go-live", ct: "Technical PM", team: "Plan A Sustainability", start: () => 16, dur: () => 4 }
 ];
 
 const TASK_TPL = [
   ["T01", "P1", "Kickoff call: confirm sponsor and success criteria", "Carbon Trail", "Sustainability", 1],
   ["T02", "P1", "Agree POC scope: categories, suppliers, sample size", "Carbon Trail", "Sustainability, Product", 3],
   ["T03", "P1", "Share data request list and access needs", "Carbon Trail", "IT", 4],
-  ["T04", "P2", "API access to PLM (product specs and BOM)", "Client", "IT", 5],
-  ["T05", "P2", "Connect supplier data platform (e.g. Higg FEM via Worldly)", "Carbon Trail", "Procurement", 8],
-  ["T06", "P2", "Purchase volumes feed from ERP (units bought)", "Client", "Procurement, Finance", 10],
-  ["T07", "P3", "Map products, suppliers, facilities, activity to Carbon Trail model", "Carbon Trail", "Product", 5],
-  ["T08", "P3", "Flag data gaps and agree proxies for missing inputs", "Carbon Trail", "Sustainability", 10],
-  ["T09", "P3", "Supplier follow-up for missing primary data", "Client", "Procurement", 13],
-  ["T10", "P4", "Run pilot product footprints (ISO-aligned / PEF)", "Carbon Trail", "Sustainability", 4],
-  ["T11", "P4", "Pilot Scope 3 estimate (footprint × units bought)", "Carbon Trail", "Sustainability", 6],
-  ["T12", "P5", "Review pilot results with sustainability team", "Client", "Sustainability", 3],
-  ["T13", "P5", "POC readout and go / no-go for rollout", "Carbon Trail", "Exec sponsor", 6],
-  ["T14", "R1", "Extend connections to Wave 1 categories", "Carbon Trail", "IT", 7],
+  ["T04", "P1", "API access to PLM (product specs and BOM)", "Client", "IT", 5],
+  ["T05", "P2", "Connect supplier data platform (Higg FEM via Worldly)", "Carbon Trail", "Procurement", 1],
+  ["T06", "P2", "Purchase volumes feed from ERP (units bought)", "Client", "Procurement, Finance", 3],
+  ["T07", "P2", "Map products, suppliers, facilities, activity to Carbon Trail model", "Carbon Trail", "Product", 5],
+  ["T08", "P3", "Flag data gaps and agree proxies for missing inputs", "Carbon Trail", "Sustainability", 3],
+  ["T09", "P3", "Supplier follow-up for missing primary data", "Client", "Procurement", 6],
+  ["T10", "P3", "Run pilot product footprints (ISO-aligned / PEF)", "Carbon Trail", "Sustainability", 4],
+  ["T11", "P3", "Pilot Scope 3 estimate (footprint × units bought)", "Carbon Trail", "Sustainability", 6],
+  ["T12", "P4", "Review pilot results with sustainability team", "Client", "Sustainability", 3],
+  ["T13", "P4", "POC readout and go / no-go for rollout", "Carbon Trail", "Exec sponsor", 6],
+  ["T14", "R1", "Extend connections to the live APIs", "Carbon Trail", "IT", 7],
   ["T15", "R1", "Train category and sourcing users", "Carbon Trail", "Product, Procurement", 14],
-  ["T16", "R2", "Wave 2 categories live", "Carbon Trail", "Product", 25],
-  ["T17", "R2", "Monthly steering review", "Carbon Trail", "Exec sponsor", 20],
-  ["T18", "R3", "Wave 3 live; full Scope 3 roll-up", "Carbon Trail", "Sustainability", 25],
-  ["T19", "R4", "Reporting outputs aligned to GHG Protocol", "Carbon Trail", "Sustainability", 7],
+  ["T16", "R2", "Full category baseline live", "Carbon Trail", "Product", 25],
+  ["T17", "R2", "Steering review", "Carbon Trail", "Exec sponsor", 20],
+  ["T18", "R3", "Anomaly checks against the prior baseline", "Carbon Trail", "Sustainability", 21],
+  ["T19", "R3", "Reporting outputs aligned to GHG Protocol", "Carbon Trail", "Sustainability", 21],
   ["T20", "R4", "Handover to BAU success plan", "Carbon Trail", "Sustainability", 12]
 ];
 
@@ -56,25 +54,36 @@ const DATA_TPL = [
   ["Traceability platform – Tier 2-4 links", "Supplier", "Procurement", "API"]
 ];
 
-const DEFAULT_WEIGHTS = { onboarding: 30, coverage: 25, adoption: 15, ttv: 15, sentiment: 15 };
+const DEFAULT_WEIGHTS = { schedule: 40, coverage: 25, ownership: 20, movement: 15 };
+const WEIGHT_LABELS = { schedule: "Schedule", coverage: "Coverage", ownership: "Ownership", movement: "Movement" };
 const TASK_STATUSES = ["Not started", "In progress", "Done", "Blocked"];
 const DATA_STATUSES = ["Requested", "Received", "Mapped", "Live"];
 
 function waveWeeks(roll) {
   return Math.max(1, Math.round(Number(roll) * 52 / 12 / 3));
 }
+function okDate(d) { return d instanceof Date && !isNaN(d.getTime()); }
 function D(s) {
-  const [y, m, d] = String(s).split("-").map(Number);
-  return new Date(Date.UTC(y, m - 1, d));
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ""));
+  if (!m) return null;
+  const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  return okDate(d) ? d : null;
 }
-function addDays(d, n) { return new Date(d.getTime() + n * 864e5); }
-function daysBetween(a, b) { return Math.round((a - b) / 864e5); }
+function addDays(d, n) {
+  if (!okDate(d)) return null;
+  return new Date(d.getTime() + (Number(n) || 0) * 864e5);
+}
+function daysBetween(a, b) {
+  if (!okDate(a) || !okDate(b)) return 0;
+  return Math.round((a - b) / 864e5);
+}
 function iso(d) {
+  if (!okDate(d)) return "";
   const p = (n) => String(n).padStart(2, "0");
   return d.getUTCFullYear() + "-" + p(d.getUTCMonth() + 1) + "-" + p(d.getUTCDate());
 }
-function fmt(d) { return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", timeZone: "UTC" }); }
-function fmtY(d) { return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }); }
+function fmt(d) { return okDate(d) ? d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", timeZone: "UTC" }) : "—"; }
+function fmtY(d) { return okDate(d) ? d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric", timeZone: "UTC" }) : "—"; }
 function esc(s) {
   return String(s ?? "").replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[m]));
 }
@@ -105,11 +114,9 @@ function makeMS() {
     owner: "Adithya Nair",
     kickoff: "2026-12-07",
     poc: 4,
-    roll: 3,
+    roll: 4,
     asof: "2026-12-28",
     contractStart: "2026-12-07",
-    renewal: "2027-12-07",
-    renewalStatus: "Not started",
     licensed: 10,
     activeUsers: 6,
     lastLogin: "2026-12-26",
@@ -161,8 +168,6 @@ function makeNorthloom() {
     roll: 3,
     asof: "2026-12-28",
     contractStart: "2026-10-12",
-    renewal: "2027-10-12",
-    renewalStatus: "Not started",
     licensed: 24,
     activeUsers: 18,
     lastLogin: "2026-12-26",
@@ -205,8 +210,17 @@ function load() {
     if (!raw) return seed();
     const parsed = JSON.parse(raw);
     if (!parsed || parsed.v !== 2 || !Array.isArray(parsed.clients)) return seed();
-    parsed.weights = { ...DEFAULT_WEIGHTS, ...(parsed.weights || {}) };
-    return parsed;
+    parsed.weights = cleanWeights(parsed.weights);
+    if (parsed.view === "renewal") parsed.view = "snapshot";
+    parsed.clients.forEach((c) => {
+      delete c.renewal;
+      delete c.renewalStatus;
+      delete c.statusReport;
+      if (!Array.isArray(c.tasks)) c.tasks = [];
+      if (!Array.isArray(c.data)) c.data = [];
+      if (!Array.isArray(c.stakeholders)) c.stakeholders = [];
+    });
+    return scrubAmber(parsed);
   } catch (e) {
     return seed();
   }
@@ -247,39 +261,62 @@ function planOf(c) {
   });
 }
 function labelRag(rag) {
-  return rag === "Amber" ? "Yellow" : rag;
+  return /^amber$/i.test(String(rag || "")) ? "Yellow" : rag;
+}
+function scrubAmber(node) {
+  if (typeof node === "string") return node.replace(/amber/ig, "Yellow");
+  if (Array.isArray(node)) return node.map(scrubAmber);
+  if (node && typeof node === "object") {
+    Object.keys(node).forEach((key) => { node[key] = scrubAmber(node[key]); });
+  }
+  return node;
 }
 
+function rowStats(r) {
+  const exp = Math.max(0, Number(r && r.exp) || 0);
+  const map = Math.max(0, Number(r && r.map) || 0);
+  const pct = exp ? Math.min(100, Math.round(map / exp * 100)) : 0;
+  const proxy = Math.max(0, exp - map);
+  return { exp, map, pct, proxy };
+}
 function calc(c) {
   const P = planOf(c);
   const asof = D(c.asof);
+  const kick = D(c.kickoff);
+  const tasksIn = Array.isArray(c.tasks) ? c.tasks : [];
+  const dataIn = Array.isArray(c.data) ? c.data : [];
   const byId = Object.fromEntries(P.map((p) => [p.id, p]));
-  const tasks = c.tasks.map((t) => {
-    const due = addDays(byId[t.ph] ? byId[t.ph].st : D(c.kickoff), +t.off || 0);
-    const late = t.status === "Done" ? 0 : Math.max(0, daysBetween(asof, due));
-    const rag = t.status === "Done" ? "Done" : (t.status === "Blocked" || late > 0) ? "Red" : (daysBetween(due, asof) <= 7 ? "Amber" : "Green");
+  const tasks = tasksIn.map((t) => {
+    const phase = byId[t.ph];
+    const due = addDays(phase && phase.st ? phase.st : kick, +t.off || 0);
+    const late = t.status === "Done" || !okDate(due) || !okDate(asof) ? 0 : Math.max(0, daysBetween(asof, due));
+    const until = okDate(due) && okDate(asof) ? daysBetween(due, asof) : 99;
+    const rag = t.status === "Done" ? "Done" : (t.status === "Blocked" || late > 0) ? "Red" : (until <= 7 ? "Yellow" : "Green");
     return { ...t, due, late, rag };
   });
   const done = tasks.filter((t) => t.status === "Done").length;
   const blocked = tasks.filter((t) => t.status === "Blocked").length;
   const overdue = tasks.filter((t) => t.late > 0 && t.status !== "Blocked").length;
-  const soon = tasks.filter((t) => t.rag === "Amber").length;
-  const exp = c.data.reduce((a, r) => a + (+r.exp || 0), 0);
-  const map = c.data.reduce((a, r) => a + (+r.map || 0), 0);
-  const sup = c.data.filter((r) => r.type === "Supplier");
-  const supExp = sup.reduce((a, r) => a + (+r.exp || 0), 0);
-  const supMap = sup.reduce((a, r) => a + (+r.map || 0), 0);
-  const cur = P.filter((p) => p.st <= asof && p.en >= asof);
-  const nxt = P.filter((p) => p.en >= asof).sort((a, b) => a.en - b.en)[0];
-  const health = (blocked > 0 || overdue > 2) ? "Red" : overdue > 0 ? "Amber" : "Green";
-  const weekNum = daysBetween(asof, D(c.kickoff)) >= 0 ? Math.floor(daysBetween(asof, D(c.kickoff)) / 7) + 1 : 0;
+  const soon = tasks.filter((t) => t.rag === "Yellow").length;
+  const rows = dataIn.map(rowStats);
+  const exp = rows.reduce((a, r) => a + r.exp, 0);
+  const map = rows.reduce((a, r) => a + r.map, 0);
+  const proxy = rows.reduce((a, r) => a + r.proxy, 0);
+  const sup = dataIn.filter((r) => r.type === "Supplier").map(rowStats);
+  const supExp = sup.reduce((a, r) => a + r.exp, 0);
+  const supMap = sup.reduce((a, r) => a + r.map, 0);
+  const cur = P.filter((p) => okDate(p.st) && okDate(p.en) && okDate(asof) && p.st <= asof && p.en >= asof);
+  const nxt = P.filter((p) => okDate(p.st) && okDate(asof) && p.st > asof).sort((a, b) => a.st - b.st)[0] || null;
+  const health = (blocked > 0 || overdue > 2) ? "Red" : overdue > 0 ? "Yellow" : "Green";
+  const elapsed = okDate(asof) && okDate(kick) ? daysBetween(asof, kick) : -1;
+  const weekNum = elapsed >= 0 ? Math.floor(elapsed / 7) + 1 : 0;
   return {
-    P, tasks, done, blocked, overdue, soon, exp, map,
-    cov: exp ? map / exp : 0,
-    supExp, supMap, supCov: supExp ? supMap / supExp : 0,
+    P, tasks, done, blocked, overdue, soon, exp, map, proxy,
+    cov: exp ? Math.min(1, map / exp) : 0,
+    supExp, supMap, supCov: supExp ? Math.min(1, supMap / supExp) : 0,
     cur, nxt, health, asof,
-    pocEnd: addDays(D(c.kickoff), (+c.poc) * 7 - 1),
-    golive: P.length ? P[P.length - 1].en : D(c.kickoff),
+    pocEnd: addDays(kick, (+c.poc || 0) * 7 - 1),
+    golive: P.length ? P[P.length - 1].en : kick,
     weekNum
   };
 }
@@ -290,76 +327,132 @@ function openIssues(c) {
 function silentPeople(c) {
   const asof = D(c.asof);
   return (c.stakeholders || []).map((p) => {
-    const age = p.lastContact ? daysBetween(asof, D(p.lastContact)) : 999;
-    return { ...p, age };
-  }).filter((p) => p.age >= 30);
+    if (!p.lastContact) return null;
+    return { ...p, age: daysBetween(asof, D(p.lastContact)) };
+  }).filter((p) => p && p.age >= 30);
+}
+function cleanWeights(saved) {
+  const keys = Object.keys(DEFAULT_WEIGHTS);
+  const old = saved && (saved.onboarding != null || saved.adoption != null || saved.sentiment != null || saved.ttv != null || saved.renewal != null);
+  if (!saved || old || !keys.every((key) => saved[key] != null)) return { ...DEFAULT_WEIGHTS };
+  const next = {};
+  keys.forEach((key) => { next[key] = Math.max(0, Number(saved[key]) || 0); });
+  return next;
+}
+function teamHit(personTeam, label) {
+  const needle = String(personTeam || "").trim().toLowerCase();
+  if (!needle) return false;
+  return String(label || "").split(/[,/]/).some((part) => part.trim().toLowerCase() === needle);
 }
 
 function scoreOf(c, k) {
-  const w = state.weights;
+  const w = cleanWeights(state.weights);
   const donePct = k.tasks.length ? Math.round(k.done / k.tasks.length * 100) : 0;
-  const onboarding = clamp(donePct - k.overdue * 5 - k.blocked * 10, 0, 100);
-  const coverage = Math.round((k.cov * 70) + (k.supCov * 30));
-  let adoption = c.licensed ? Math.round((+c.activeUsers || 0) / +c.licensed * 100) : 0;
-  const loginAge = c.lastLogin ? daysBetween(D(c.asof), D(c.lastLogin)) : 999;
-  if (loginAge > 14) adoption = clamp(adoption - 20, 0, 100);
-  adoption = clamp(adoption, 0, 100);
-  const target = Math.round((+c.poc || 4) * 7 * 0.75);
-  const foot = c.firstFootprint || (k.tasks.find((t) => t.id === "T10" && t.status === "Done") ? iso(k.tasks.find((t) => t.id === "T10").due) : "");
-  let ttv = 0;
-  let ttvDetail = "No product footprint yet.";
-  if (foot) {
-    const elapsed = daysBetween(D(foot), D(c.kickoff));
-    ttv = elapsed <= target ? 100 : clamp(100 - (elapsed - target) * 4, 0, 100);
-    ttvDetail = "First product footprint on " + fmtY(D(foot)) + ", " + elapsed + " days after kickoff. Target for this POC is day " + target + ".";
+  const schedule = clamp(donePct - k.overdue * 5 - k.blocked * 15, 0, 100);
+  const coverage = k.exp ? Math.min(100, Math.round(k.cov * 100)) : 0;
+  const gap = k.proxy;
+  const openTasks = k.tasks.filter((t) => t.status !== "Done");
+  const named = openTasks.filter((t) => String(t.owner || "").trim() && String(t.team || "").trim()).length;
+  const ownedItems = openTasks.length;
+  const quiet = silentPeople(c).filter((p) => openTasks.some((t) => teamHit(p.team, t.team)));
+  const ownership = clamp((ownedItems ? Math.round(named / ownedItems * 100) : 100) - quiet.length * 20, 0, 100);
+  const phaseTasks = k.tasks.filter((t) => k.cur.some((p) => p.id === t.ph));
+  const moving = phaseTasks.filter((t) => t.status === "In progress" || t.status === "Done");
+  let movement = 100;
+  let moveLine = "No phase contains the status date.";
+  if (!k.cur.length) movement = 40;
+  else if (!phaseTasks.length || !moving.length) {
+    movement = 20;
+    moveLine = k.cur.map((p) => p.name).join("; ") + " is stalled. None of its tasks are in progress or done.";
   } else {
-    const elapsed = Math.max(0, daysBetween(D(c.asof), D(c.kickoff)));
-    ttv = elapsed <= target ? 60 : clamp(40 - (elapsed - target) * 3, 0, 100);
-    ttvDetail = "No footprint date yet. Day " + elapsed + " of the engagement. Target is day " + target + ".";
+    moveLine = k.cur.map((p) => p.name).join("; ") + " is moving. " + moving.length + " of " + phaseTasks.length + " tasks in that phase are in progress or done.";
   }
-  const csatScore = clamp(+c.csat || 0, 0, 10) / 10 * 100;
-  const npsScore = (clamp(+c.nps || 0, -100, 100) + 100) / 2;
-  const sentiment = clamp(Math.round(csatScore * 0.6 + npsScore * 0.4 - openIssues(c).length * 10), 0, 100);
+  const foot = c.firstFootprint || "";
+  const footLine = foot
+    ? " First footprint on " + fmtY(D(foot)) + ", " + daysBetween(D(foot), D(c.kickoff)) + " days after kickoff."
+    : " No footprint yet.";
   const parts = [
     {
-      key: "onboarding", label: "Onboarding progress", score: onboarding, weight: +w.onboarding || 0,
-      detail: donePct + "% of tasks are done (" + k.done + " of " + k.tasks.length + "). Penalty is " + (k.overdue * 5) + " for " + k.overdue + " overdue and " + (k.blocked * 10) + " for " + k.blocked + " blocked. " + donePct + " − " + (k.overdue * 5) + " − " + (k.blocked * 10) + " = " + onboarding + "."
+      key: "schedule", label: "Schedule", score: schedule, weight: +w.schedule || 0,
+      detail: donePct + "% of tasks are done (" + k.done + " of " + k.tasks.length + "). Each overdue task takes 5. Each blocked task takes 15. " + donePct + " − " + (k.overdue * 5) + " − " + (k.blocked * 15) + " = " + schedule + "."
     },
     {
-      key: "coverage", label: "Data coverage", score: coverage, weight: +w.coverage || 0,
-      detail: Math.round(k.cov * 100) + "% of records are mapped (" + k.map.toLocaleString() + " of " + k.exp.toLocaleString() + "). Suppliers with primary data: " + Math.round(k.supCov * 100) + "% (" + k.supMap.toLocaleString() + " of " + k.supExp.toLocaleString() + "). Score is 70% records and 30% supplier primary."
+      key: "coverage", label: "Coverage", score: coverage, weight: +w.coverage || 0,
+      detail: k.map.toLocaleString() + " of " + k.exp.toLocaleString() + " records are mapped (" + coverage + "%). " + gap.toLocaleString() + " are still on a proxy."
     },
     {
-      key: "adoption", label: "Adoption", score: adoption, weight: +w.adoption || 0,
-      detail: (+c.activeUsers || 0) + " active users of " + (+c.licensed || 0) + " licensed seats. Last login " + (c.lastLogin ? fmtY(D(c.lastLogin)) : "not set") + (loginAge > 14 ? ". Login is older than 14 days, so 20 points come off." : ". Login is inside 14 days.")
+      key: "ownership", label: "Ownership", score: ownership, weight: +w.ownership || 0,
+      detail: named + " of " + ownedItems + " open tasks have a named team. " + (quiet.length ? quiet.map((p) => p.role + " (" + p.team + ") is quiet " + p.age + " days on an open task, so 20 points come off.").join(" ") : "Nobody quiet for 30 days is sitting on an open task.")
     },
-    { key: "ttv", label: "Time to value", score: ttv, weight: +w.ttv || 0, detail: ttvDetail },
     {
-      key: "sentiment", label: "Sentiment", score: sentiment, weight: +w.sentiment || 0,
-      detail: "CSAT " + c.csat + "/10 and NPS " + c.nps + ". Open issues: " + openIssues(c).length + ". Each open issue takes 10 points. 60% of the base is CSAT, 40% is NPS rescaled from −100…100."
+      key: "movement", label: "Movement", score: movement, weight: +w.movement || 0,
+      detail: moveLine + footLine
     }
   ];
   const weightSum = parts.reduce((a, p) => a + p.weight, 0) || 1;
   parts.forEach((p) => { p.contribution = round1(p.score * p.weight / 100); });
   const total = round1(parts.reduce((a, p) => a + p.contribution, 0));
-  return { parts, total, weightSum, onboarding, coverage, adoption, ttv, sentiment };
+  return { parts, total, weightSum, schedule, coverage, ownership, movement, urgencies: planIssues(c, k).map((item) => item.line) };
 }
-
-function renewalDays(c) { return daysBetween(D(c.renewal), D(c.asof)); }
-
-function whyToday(c, k, sc) {
-  const lines = [];
-  if (k.blocked) lines.push(k.blocked + " task" + (k.blocked === 1 ? " is" : "s are") + " blocked. Plan health is Red on that rule alone.");
-  else if (k.overdue > 2) lines.push(k.overdue + " tasks are overdue. Three or more makes plan health Red.");
-  else if (k.overdue) lines.push(k.overdue + " task" + (k.overdue === 1 ? " is" : "s are") + " overdue. Plan health is Yellow.");
-  if (sc.total < 60) lines.push("Account score is " + sc.total + ", under 60. The table on Score shows which driver did it.");
-  silentPeople(c).forEach((p) => lines.push(p.role + " (" + p.team + ") has not been contacted in " + p.age + " days."));
-  const rd = renewalDays(c);
-  if (rd >= 0 && rd <= 90 && c.renewalStatus !== "Closed won" && c.renewalStatus !== "Closed lost") {
-    lines.push("Renewal is " + fmtY(D(c.renewal)) + ", " + rd + " days out, and the renewal status is " + c.renewalStatus + ".");
-  }
-  if (!lines.length) lines.push("Nothing in the rules is asking for a conversation today. The next milestone is " + (k.nxt ? k.nxt.name : "complete") + ".");
-  return lines;
+function planIssues(c, k) {
+  const items = [];
+  const team = (value) => String(value || "").trim() || "No team";
+  k.tasks.filter((t) => t.status === "Blocked").sort((a, b) => b.late - a.late).forEach((t) => {
+    items.push({
+      team: team(t.team),
+      line: team(t.team) + ": " + t.name + " is blocked. Due " + fmt(t.due) + ".",
+      action: team(t.team) + ": unblock " + t.name
+    });
+  });
+  k.tasks.filter((t) => t.late > 0 && t.status !== "Blocked").sort((a, b) => b.late - a.late).forEach((t) => {
+    items.push({
+      team: team(t.team),
+      line: team(t.team) + ": " + t.name + " is " + t.late + " day" + (t.late === 1 ? "" : "s") + " late. Due " + fmt(t.due) + ".",
+      action: team(t.team) + ": close " + t.name
+    });
+  });
+  (c.data || []).forEach((r) => {
+    const stats = rowStats(r);
+    if (stats.exp > 0 && stats.map < stats.exp) {
+      items.push({
+        team: team(r.owner),
+        line: team(r.owner) + ": " + r.sys + " is not fully mapped (" + stats.map.toLocaleString() + " of " + stats.exp.toLocaleString() + ", " + stats.proxy.toLocaleString() + " on proxy).",
+        action: team(r.owner) + ": finish mapping " + r.sys
+      });
+    }
+  });
+  const open = k.tasks.filter((t) => t.status !== "Done");
+  silentPeople(c).forEach((p) => {
+    const hit = open.filter((t) => teamHit(p.team, t.team)).sort((a, b) => b.late - a.late)[0];
+    if (!hit) return;
+    items.push({
+      team: team(p.team),
+      line: team(p.team) + ": " + p.role + " has not been contacted in " + p.age + " days, while " + hit.name + " is still open. Due " + fmt(hit.due) + ".",
+      action: team(p.team) + ": contact " + p.role
+    });
+  });
+  return items;
+}
+function phaseTeams(k) {
+  const names = [];
+  k.cur.forEach((p) => String(p.team || "").split(",").forEach((part) => names.push(part.trim())));
+  k.tasks.filter((t) => t.status !== "Done" && k.cur.some((p) => p.id === t.ph)).forEach((t) => {
+    String(t.team || "").split(",").forEach((part) => names.push(part.trim()));
+  });
+  return [...new Set(names.filter(Boolean))];
+}
+function nextTeam(k) {
+  const blocked = k.tasks.filter((t) => t.status === "Blocked").sort((a, b) => b.late - a.late)[0];
+  if (blocked) return blocked.team || "Unassigned";
+  const late = k.tasks.filter((t) => t.late > 0).sort((a, b) => b.late - a.late)[0];
+  if (late) return late.team || "Unassigned";
+  const open = k.tasks.find((t) => t.status !== "Done");
+  return open ? (open.team || "Unassigned") : "No open task";
+}
+function phaseNow(k) {
+  if (k.cur.length) return k.cur.map((p) => p.id + " " + p.name).join(", ");
+  if (k.nxt) return "Next · " + k.nxt.id + " " + k.nxt.name;
+  return "No open phase";
 }
 
 function specificAsk(t) {
@@ -380,8 +473,8 @@ function callScript(c, k) {
   const open = "Status date " + fmtY(k.asof) + ". Week " + k.weekNum + ". Current phase: " + phase + ". Plan health is " + labelRag(k.health) + ".";
   const reason = k.health === "Red"
     ? (k.blocked ? " Red because " + k.blocked + " task" + (k.blocked === 1 ? " is" : "s are") + " blocked" + (k.overdue ? " and " + k.overdue + " more are overdue" : "") + "." : " Red because " + k.overdue + " tasks are overdue.")
-    : k.health === "Amber" ? " Yellow because " + k.overdue + " task" + (k.overdue === 1 ? " is" : "s are") + " overdue and nothing is blocked." : " Green: nothing is blocked or overdue.";
-  const focus = k.tasks.filter((t) => t.rag === "Red" || t.rag === "Amber").sort((a, b) => (b.status === "Blocked") - (a.status === "Blocked") || b.late - a.late);
+    : k.health === "Yellow" ? " Yellow because " + k.overdue + " task" + (k.overdue === 1 ? " is" : "s are") + " overdue and nothing is blocked." : " Green: nothing is blocked or overdue.";
+  const focus = k.tasks.filter((t) => t.rag === "Red" || t.rag === "Yellow").sort((a, b) => (b.status === "Blocked") - (a.status === "Blocked") || b.late - a.late);
   const asks = focus.slice(0, 4).map(specificAsk);
   const proxy = Math.max(0, k.exp - k.map);
   const dataLine = k.exp
@@ -394,7 +487,8 @@ function gantt(k) {
   if (!k.P.length) return `<p class="note">No phases yet. Add a phase to draw the plan.</p>`;
   const weeks = Math.max(1, ...k.P.map((p) => p.sw + p.w));
   const k0 = k.P[0].st;
-  const pocWeeks = k.P.find((p) => p.id === "P5") ? k.P.find((p) => p.id === "P5").sw + k.P.find((p) => p.id === "P5").w : 4;
+  const lastPoc = [...k.P].reverse().find((p) => p.stage === "POC");
+  const pocWeeks = lastPoc ? lastPoc.sw + lastPoc.w : 4;
   const tw = daysBetween(k.asof, k0) / 7;
   const cols = `minmax(190px,230px) repeat(${weeks}, minmax(26px,1fr))`;
   let h = `<div class="gantt" style="grid-template-columns:${cols}">`;
@@ -439,10 +533,10 @@ function fitText(ctx, text, max) {
 function downloadGantt() {
   const c = client();
   const k = calc(c);
-  if (!k.P.length) return;
+  if (!k.P.length || !okDate(k.P[0].st)) return;
   const weeks = Math.max(1, ...k.P.map((p) => p.sw + p.w));
   const k0 = k.P[0].st;
-  const p5 = k.P.find((p) => p.id === "P5");
+  const p5 = [...k.P].reverse().find((p) => p.stage === "POC");
   const pocWeeks = p5 ? p5.sw + p5.w : 4;
   const tw = daysBetween(k.asof, k0) / 7;
   const scale = 2;
@@ -573,27 +667,22 @@ function viewToday() {
   const rows = state.clients.map((c) => {
     const k = calc(c);
     const sc = scoreOf(c, k);
-    return { c, k, sc, why: whyToday(c, k, sc) };
-  }).sort((a, b) => (a.k.health === "Red" ? 0 : a.k.health === "Amber" ? 1 : 2) - (b.k.health === "Red" ? 0 : b.k.health === "Amber" ? 1 : 2));
+    return { c, k, sc };
+  }).sort((a, b) => (b.sc.urgencies.length - a.sc.urgencies.length) || ((a.k.health === "Red" ? 0 : a.k.health === "Yellow" ? 1 : 2) - (b.k.health === "Red" ? 0 : b.k.health === "Yellow" ? 1 : 2)));
   const red = rows.filter((r) => r.k.health === "Red").length;
-  const low = rows.filter((r) => r.sc.total < 60).length;
-  const renewing = rows.filter((r) => { const d = renewalDays(r.c); return d >= 0 && d <= 90 && r.c.renewalStatus !== "Closed won"; }).length;
-  const silent = rows.reduce((a, r) => a + silentPeople(r.c).length, 0);
   return `<div class="stack">
-    <p class="lede">Who needs a conversation, and why.</p>
-    <p class="note">Plan health is the weekly rule: Red if anything is blocked or three or more tasks are overdue, Yellow if any task is overdue, otherwise Green. The account score is the longer view. A healthy score does not cancel a late steering review.</p>
+    <p class="lede">Which account needs a move, and which team makes it.</p>
+    <p class="note">Plan colour is the weekly rule: Red if anything is blocked or three or more tasks are overdue, Yellow if any task is overdue, otherwise Green. Open urgencies are the blocked work, the late work, the proxy gap, and anyone quiet for 30 days.</p>
     <div class="kpis">
-      ${kpi("Accounts", rows.length, "In this book")}
-      ${kpi("Plan health Red", red, "Blocked, or 3+ overdue")}
-      ${kpi("Score under 60", low, "See the five drivers")}
-      ${kpi("Renewals in 90 days", renewing, "Status still open")}
-      ${kpi("Contacts gone quiet", silent, "30 days or more")}
+      ${kpi("Accounts", rows.length, "Open projects")}
+      ${kpi("Plan colour Red", red, "Blocked, or 3+ overdue")}
+      ${kpi("Open urgencies", rows.reduce((a, r) => a + r.sc.urgencies.length, 0), "Across these accounts")}
     </div>
     ${rows.map((r) => `<button type="button" class="card account" data-open="${esc(r.c.id)}">
-      <div><span class="tag">${esc(r.c.stage)} · ${esc(r.c.owner)}</span><h2>${esc(r.c.name)}</h2></div>
-      <div>${pill(r.k.health)}<div class="note">Plan health</div><div style="margin-top:6px"><b>${r.sc.total}</b> <span class="note">/ 100</span></div></div>
-      <div class="note">${r.why.map(esc).join("<br>")}</div>
-      <div class="btn">Open</div>
+      <div><h2>${esc(r.c.name)}</h2><div class="note">${esc(phaseNow(r.k))}</div></div>
+      <div>${pill(r.k.health)}<div class="note">Plan</div></div>
+      <div><b>${r.sc.urgencies.length}</b><div class="note">Open urgencies</div></div>
+      <div><b>${esc(nextTeam(r.k))}</b><div class="note">Next team</div></div>
     </button>`).join("")}
   </div>`;
 }
@@ -604,62 +693,62 @@ function kpi(l, v, s) {
   return `<div class="card kpi"><div class="l">${esc(l)}</div><div class="v${tone}">${esc(shown)}</div><div class="s">${esc(s)}</div></div>`;
 }
 
-function viewSnapshot(c, k, sc) {
-  const script = callScript(c, k);
-  const focus = k.tasks.filter((t) => t.rag === "Red" || t.rag === "Amber").sort((a, b) => b.late - a.late);
-  const quiet = silentPeople(c);
+function viewSnapshot(c, k) {
+  const issues = planIssues(c, k);
+  const phase = k.cur[0];
+  const stage = k.cur.length ? [...new Set(k.cur.map((p) => p.stage))].join(" and ") : (c.stage || "Between phases");
+  const teams = phaseTeams(k);
+  const pct = k.exp ? Math.min(100, Math.round(k.cov * 100)) : 0;
   return `<div class="stack">
-    <p class="lede">${esc(whereLine(c, k))}</p>
-    <div class="kpis">
-      ${kpi("Plan health", k.health, healthRule(k))}
-      ${kpi("Account score", sc.total, "Out of 100, drivers on Score")}
-      ${kpi("Tasks done", k.done + " / " + k.tasks.length, k.soon + " due within 7 days")}
-      ${kpi("Data coverage", Math.round(k.cov * 100) + "%", Math.max(0, k.exp - k.map).toLocaleString() + " records on proxy")}
-      ${kpi("This phase ends", k.nxt ? fmt(k.nxt.en) : "—", k.nxt ? k.nxt.id + " " + k.nxt.name : "Plan complete")}
-    </div>
-    ${methodStrip()}
-    <div class="card">
-      <h2>Teams on this engagement</h2>
-      <p class="note" style="margin:6px 0 10px">The POC needs a decision from sustainability and the exec sponsor. The data comes from product, IT, procurement and finance. Rollout adds the category users who will live in the waves.</p>
-      <div class="teams">
-        <span class="team">Sustainability · success criteria, proxies, readout</span>
-        <span class="team">Exec sponsor · go / no-go</span>
-        <span class="team">Product · scope and mapping</span>
-        <span class="team">IT · API access</span>
-        <span class="team">Procurement · supplier platform and follow-up</span>
-        <span class="team">Finance · units bought</span>
+    <section class="card">
+      <h2>Where the project is</h2>
+      <p class="lede">Week ${k.weekNum} · ${esc(stage)}</p>
+      <p>${k.cur.length ? k.cur.map((p) => `<b>${esc(p.id)} ${esc(p.name)}</b>`).join("<br>") : "No phase contains the status date."}</p>
+      <p class="note">Status date ${fmtY(k.asof)}. Kickoff ${fmtY(D(c.kickoff))}. ${k.nxt ? "Next phase: " + esc(k.nxt.id) + " " + esc(k.nxt.name) + ", starting " + fmt(k.nxt.st) + "." : "No later phase is scheduled."}</p>
+    </section>
+    <section class="card">
+      <h2>Progress</h2>
+      <p class="lede">${k.done} of ${k.tasks.length} tasks done</p>
+      <p>${pill(k.health)} <span class="note">${esc(healthRule(k))}</span></p>
+    </section>
+    <section class="card">
+      <h2>Open issues</h2>
+      <ol class="clean">${issues.map((item) => `<li>${esc(item.line)}</li>`).join("") || "<li>Nothing is blocked, late, unmapped, or sitting with someone quiet.</li>"}</ol>
+    </section>
+    <section class="card">
+      <h2>What to do next</h2>
+      <ol class="clean">${issues.slice(0, 3).map((item) => `<li>${esc(item.action)}</li>`).join("") || "<li>No open action. Confirm the next phase with the client team.</li>"}</ol>
+    </section>
+    <section class="card">
+      <h2>Teams on this phase</h2>
+      <p class="note">${phase ? esc(phase.id + " " + phase.name) : "No current phase."}</p>
+      <div class="teams">${teams.map((name) => `<span class="team">${esc(name)}</span>`).join("") || `<span class="note">No client team is named on this phase.</span>`}</div>
+    </section>
+    <section class="card">
+      <h2>Coverage</h2>
+      <p>${k.map.toLocaleString()} mapped · ${k.proxy.toLocaleString()} on proxy · ${pct}%</p>
+      <div class="report-block">
+        ${(c.data || []).map((r) => {
+          const stats = rowStats(r);
+          return `<div class="report-row">
+            <span>${esc(r.sys)}</span>
+            <span>${stats.map.toLocaleString()} / ${stats.exp.toLocaleString()}</span>
+            <span>${stats.proxy.toLocaleString()} on proxy · ${stats.pct}%</span>
+            <div class="report-bar"><i class="${stats.pct < 50 ? "red" : stats.pct < 80 ? "yellow" : "green"}" style="width:${stats.pct}%"></i></div>
+          </div>`;
+        }).join("") || `<p class="note">No data sources yet.</p>`}
       </div>
-    </div>
+    </section>
     <div class="card stack">
-      <div class="legend"><b>Plan on a page</b><span><i class="swatch" style="background:var(--leaf)"></i>POC</span><span><i class="swatch" style="background:var(--roll)"></i>Rollout</span><span><i class="swatch" style="background:var(--red)"></i>Status date</span><span>POC ends ${fmt(k.pocEnd)} · handover ${fmtY(k.golive)}</span><button type="button" class="btn" id="ganttBtn">Download Gantt</button></div>
+      <div class="legend"><b>Plan on a page</b><span><i class="swatch" style="background:var(--leaf)"></i>POC</span><span><i class="swatch" style="background:var(--roll)"></i>Rollout</span><span><i class="swatch" style="background:var(--red)"></i>Status date</span><button type="button" class="btn" id="ganttBtn">Download Gantt</button></div>
       <div class="scroll">${gantt(k)}</div>
     </div>
-    <div class="say">
-      <h2>What to say on the weekly call</h2>
-      <p>${esc(script.open)} ${esc(script.done)}</p>
-      <ol>${script.asks.map((a) => `<li><span class="who">${esc(a.who)}</span>${esc(a.say)}</li>`).join("") || "<li>Nothing is late or due this week. Confirm the next milestone and the owner.</li>"}</ol>
-      <p style="margin-top:10px">${esc(script.dataLine)}</p>
-    </div>
-    <div class="card">
-      <div class="row-actions" style="justify-content:space-between;margin-bottom:8px">
-        <h2>Red and yellow · who moves next</h2>
-        <span class="note">Change a status. The colour, the plan health and the call notes update together.</span>
-      </div>
-      ${taskList(c, focus, true)}
-    </div>
-    ${quiet.length ? `<div class="card"><h2>People gone quiet</h2><p class="note" style="margin-top:6px">${quiet.map((p) => esc(p.role + " · " + p.team + " · last contact " + p.lastContact + " · " + p.age + " days")).join("<br>")}</p></div>` : ""}
-    <div class="row-actions no-print">
-      <button type="button" class="btn primary" id="printBtn">Print this page</button>
-      <button type="button" class="btn" id="csvBtn">Download tasks as CSV</button>
-      <button type="button" class="btn" data-goto="score">Show the score maths</button>
-    </div>
-    <footer class="sources note">Product wording checked against carbontrail.net on 20 Nov 2026: home, data integrations, customer stories for CALIDA, Mammut and Deichmann, and the pricing page. Standards named from those pages include GHG Protocol, PEF, ISO 14040/44, ISO-aligned product LCAs, French environmental cost, and digital product passports. Connectors named from the integrations page include SAP, Dynamics 365, Centric, Infor, WFX, PTC FlexPLM, BigQuery, Snowflake, Higg/Worldly, Enablon, Sphera, TrusTrace and Retraced. This page is a concept for the Marks & Spencer assessment. It is not a client deliverable and not their data.</footer>
   </div>`;
 }
 
 function whereLine(c, k) {
   const phase = k.cur[0];
-  if (c.id === "ms" && phase && phase.id === "P5") {
+  if (c.id === "ms" && phase && phase.id === "P4") {
     return "Week " + k.weekNum + " of the POC. The readout starts on the status date. Plan health is " + labelRag(k.health) + " for a specific reason, and the pilot footprints are already in.";
   }
   if (phase) return "Week " + k.weekNum + ". " + phase.id + " " + phase.name + " is the open phase. Plan health is " + labelRag(k.health) + ".";
@@ -675,6 +764,14 @@ function healthRule(k) {
 }
 
 const openTask = new Set();
+const taskUi = { q: "", phase: "All", owner: "All", status: "All", colour: "All", sort: "attention" };
+
+function attentionRank(t) {
+  const tone = labelRag(t.rag);
+  if (tone === "Red") return 0;
+  if (tone === "Yellow") return 1;
+  return 2;
+}
 
 function phaseChoices(c, selected) {
   const ids = phasesOf(c).map((p) => p.id);
@@ -685,34 +782,47 @@ function statusSelect(t) {
   const tone = labelRag(t.rag);
   return `<select class="${esc(tone)}" data-task="${esc(t.id)}" data-key="status" aria-label="Status">${TASK_STATUSES.map((s) => `<option${s === t.status ? " selected" : ""}>${esc(s)}</option>`).join("")}</select>`;
 }
-function taskRow(c, t, allowEdit) {
+function taskCard(c, t, allowEdit) {
   const tone = labelRag(t.rag);
   const editing = allowEdit && openTask.has(t.id);
-  return `<article class="task-row">
-    <div>
-      <div class="task-name">${esc(t.name)}</div>
-      <div class="task-meta">${esc(t.ph)} · ${esc(t.team || "No client team")}${allowEdit ? ` <button type="button" class="text-btn" data-edit-task="${esc(t.id)}">${editing ? "Close" : "Edit"}</button>` : ""}</div>
-      ${editing ? `<div class="task-edit">
-        <label>Task<input data-task="${esc(t.id)}" data-key="name" value="${esc(t.name)}"></label>
-        <label>Phase<select data-task="${esc(t.id)}" data-key="ph">${phaseChoices(c, t.ph)}</select></label>
-        <label>Client team<input data-task="${esc(t.id)}" data-key="team" value="${esc(t.team)}"></label>
-        <label>Day offset<input data-task="${esc(t.id)}" data-key="off" type="number" value="${esc(t.off)}"></label>
-      </div>` : ""}
+  const late = t.late > 0 ? ` · ${t.late} day${t.late === 1 ? "" : "s"} late` : "";
+  return `<article class="task-card ${esc(tone)}">
+    <div class="task-card-top">
+      ${pill(tone)}
+      ${allowEdit ? `<button type="button" class="text-btn" data-edit-task="${esc(t.id)}">${editing ? "Close" : "Edit"}</button>` : ""}
     </div>
-    <div><select data-task="${esc(t.id)}" data-key="owner" aria-label="Who"><option${t.owner === "Carbon Trail" ? " selected" : ""}>Carbon Trail</option><option${t.owner === "Client" ? " selected" : ""}>Client</option></select></div>
-    <div class="task-due">${fmt(t.due)}</div>
-    <div class="status-chip">
-      <span class="pill ${esc(tone)}">${esc(tone)}</span>
-      ${statusSelect(t)}
-    </div>
+    <h3 class="task-name">${esc(t.name)}</h3>
+    <p class="task-meta">${esc(t.ph)} · ${esc(t.owner)} · ${esc(t.team || "No client team")} · Due ${fmt(t.due)}${late}</p>
+    ${allowEdit ? `<label class="status-line">Status${statusSelect(t)}</label>` : ""}
+    ${editing ? `<div class="task-edit">
+      <label>Task<input data-task="${esc(t.id)}" data-key="name" value="${esc(t.name)}"></label>
+      <label>Phase<select data-task="${esc(t.id)}" data-key="ph">${phaseChoices(c, t.ph)}</select></label>
+      <label>Owner<select data-task="${esc(t.id)}" data-key="owner"><option${t.owner === "Carbon Trail" ? " selected" : ""}>Carbon Trail</option><option${t.owner === "Client" ? " selected" : ""}>Client</option></select></label>
+      <label>Client team<input data-task="${esc(t.id)}" data-key="team" value="${esc(t.team)}"></label>
+      <label>Day offset<input data-task="${esc(t.id)}" data-key="off" type="number" value="${esc(t.off)}"></label>
+      <button type="button" class="btn danger" data-remove-task="${esc(t.id)}">Delete task</button>
+    </div>` : ""}
   </article>`;
+}
+function taskBoard(c, rows) {
+  const dueTime = (t) => okDate(t.due) ? t.due.getTime() : 0;
+  if (taskUi.sort !== "attention") {
+    return `<div class="task-cards">${rows.map((t) => taskCard(c, t, true)).join("")}</div>`;
+  }
+  return ["Red", "Yellow", "Green", "Done"].map((tone) => {
+    const list = rows.filter((t) => labelRag(t.rag) === tone);
+    if (!list.length) return "";
+    if (tone === "Red") list.sort((a, b) => (b.status === "Blocked") - (a.status === "Blocked") || b.late - a.late || dueTime(a) - dueTime(b));
+    else list.sort((a, b) => dueTime(a) - dueTime(b) || String(a.id).localeCompare(String(b.id)));
+    return `<section class="task-group"><h3 class="task-group-h"><span class="pill ${esc(tone)}">${esc(tone)}</span> ${list.length}</h3><div class="task-cards">${list.map((t) => taskCard(c, t, true)).join("")}</div></section>`;
+  }).join("");
 }
 function taskList(c, rows, allowEdit) {
   if (!rows.length) return `<p class="note">Nothing late or due in the next 7 days.</p>`;
-  return `<div class="task-list">
-    <div class="task-head"><span>Task</span><span>Who</span><span>Due</span><span>Status</span></div>
-    ${rows.map((t) => taskRow(c, t, allowEdit)).join("")}
-  </div>`;
+  return `<div class="task-cards">${rows.map((t) => taskCard(c, t, allowEdit)).join("")}</div>`;
+}
+function filterOptions(values, selected) {
+  return values.map((v) => `<option${v === selected ? " selected" : ""}>${esc(v)}</option>`).join("");
 }
 
 function viewPlan(c, k) {
@@ -758,27 +868,54 @@ function field(key, label, value, type) {
 }
 
 function viewTasks(c, k) {
+  const phases = [...new Set([...phasesOf(c).map((p) => p.id), ...k.tasks.map((t) => t.ph)])];
+  let rows = k.tasks.slice();
+  const q = taskUi.q.trim().toLowerCase();
+  if (q) rows = rows.filter((t) => String(t.name).toLowerCase().includes(q));
+  if (taskUi.phase !== "All") rows = rows.filter((t) => t.ph === taskUi.phase);
+  if (taskUi.owner !== "All") rows = rows.filter((t) => t.owner === taskUi.owner);
+  if (taskUi.status !== "All") rows = rows.filter((t) => t.status === taskUi.status);
+  if (taskUi.colour !== "All") rows = rows.filter((t) => labelRag(t.rag) === taskUi.colour);
+  const dueTime = (t) => okDate(t.due) ? t.due.getTime() : 0;
+  if (taskUi.sort === "due") rows.sort((a, b) => dueTime(a) - dueTime(b) || String(a.id).localeCompare(String(b.id)));
+  else if (taskUi.sort === "phase") rows.sort((a, b) => String(a.ph).localeCompare(String(b.ph)) || dueTime(a) - dueTime(b));
   return `<div class="stack">
-    <div class="row-actions">
-      <button type="button" class="btn primary" id="csvBtn">Download CSV</button>
-      <button type="button" class="btn" id="addTask">Add task</button>
+    <div class="card task-tools">
+      <div class="task-filters">
+        <label>Search<input id="taskSearch" data-task-filter="q" value="${esc(taskUi.q)}" placeholder="Task name"></label>
+        <label>Phase<select data-task-filter="phase">${filterOptions(["All", ...phases], taskUi.phase)}</select></label>
+        <label>Owner<select data-task-filter="owner">${filterOptions(["All", "Carbon Trail", "Client"], taskUi.owner)}</select></label>
+        <label>Status<select data-task-filter="status">${filterOptions(["All", ...TASK_STATUSES], taskUi.status)}</select></label>
+        <label>Colour<select data-task-filter="colour">${filterOptions(["All", "Red", "Yellow", "Green", "Done"], taskUi.colour)}</select></label>
+        <label>Sort<select id="taskSort" data-task-filter="sort">
+          <option value="attention"${taskUi.sort === "attention" ? " selected" : ""}>Needs attention</option>
+          <option value="due"${taskUi.sort === "due" ? " selected" : ""}>Due date</option>
+          <option value="phase"${taskUi.sort === "phase" ? " selected" : ""}>Phase</option>
+        </select></label>
+      </div>
+      <div class="row-actions">
+        <span class="task-count">${rows.length} of ${k.tasks.length}</span>
+        <button type="button" class="btn" id="csvBtn">Download CSV</button>
+        <button type="button" class="btn primary" id="addTask">Add task</button>
+      </div>
     </div>
-    ${taskList(c, k.tasks, true)}
+    ${rows.length ? taskBoard(c, rows) : `<p class="note">No tasks match these filters.</p>`}
   </div>`;
 }
 
 function viewData(c, k) {
   return `<div class="stack">
     <p class="note">Coverage = records mapped ÷ records expected. The rest is on proxy. Supplier primary data uses the rows whose type is Supplier. Carbon Trail connects to the source. It does not collect the supplier data itself.</p>
+    <div class="row-actions"><button type="button" class="btn primary" id="addSource">Add source</button></div>
     <div class="kpis">
-      ${kpi("Records mapped", Math.round(k.cov * 100) + "%", k.map.toLocaleString() + " of " + k.exp.toLocaleString())}
-      ${kpi("On proxy", Math.max(0, k.exp - k.map).toLocaleString(), "Expected minus mapped")}
-      ${kpi("Supplier primary", Math.round(k.supCov * 100) + "%", k.supMap.toLocaleString() + " of " + k.supExp.toLocaleString())}
+      ${kpi("Records mapped", Math.min(100, Math.round(k.cov * 100)) + "%", k.map.toLocaleString() + " of " + k.exp.toLocaleString())}
+      ${kpi("On proxy", k.proxy.toLocaleString(), "Expected minus mapped, per source")}
+      ${kpi("Supplier primary", Math.min(100, Math.round(k.supCov * 100)) + "%", k.supMap.toLocaleString() + " of " + k.supExp.toLocaleString())}
     </div>
     <div class="scroll"><table>
-      <thead><tr><th>Source</th><th>Type</th><th>Client owner</th><th>Connection</th><th>Status</th><th>Expected</th><th>Mapped</th><th>Coverage</th><th>On proxy</th></tr></thead>
-      <tbody>${c.data.map((r, i) => {
-        const cv = r.exp ? Math.min(1, r.map / r.exp) : 0;
+      <thead><tr><th>Source</th><th>Type</th><th>Client owner</th><th>Connection</th><th>Status</th><th>Expected</th><th>Mapped</th><th>Coverage</th><th>On proxy</th><th></th></tr></thead>
+      <tbody>${(c.data || []).map((r, i) => {
+        const stats = rowStats(r);
         return `<tr>
           <td><input data-row="${i}" data-key="sys" value="${esc(r.sys)}" style="min-width:200px"></td>
           <td><select data-row="${i}" data-key="type">${["Product", "Supplier", "Facility", "Activity"].map((o) => `<option${o === r.type ? " selected" : ""}>${o}</option>`).join("")}</select></td>
@@ -787,11 +924,12 @@ function viewData(c, k) {
           <td><select data-row="${i}" data-key="status">${DATA_STATUSES.map((o) => `<option${o === r.status ? " selected" : ""}>${o}</option>`).join("")}</select></td>
           <td><input data-row="${i}" data-key="exp" type="number" min="0" value="${esc(r.exp)}" style="width:80px"></td>
           <td><input data-row="${i}" data-key="map" type="number" min="0" value="${esc(r.map)}" style="width:80px"></td>
-          <td><div class="cov"><i style="width:${Math.round(cv * 100)}%"></i></div>${Math.round(cv * 100)}%</td>
-          <td>${Math.max(0, (+r.exp || 0) - (+r.map || 0)).toLocaleString()}</td>
+          <td><div class="cov"><i style="width:${stats.pct}%"></i></div>${stats.pct}%</td>
+          <td>${stats.proxy.toLocaleString()}</td>
+          <td><button type="button" class="btn danger" data-remove-source="${i}">Delete</button></td>
         </tr>`;
       }).join("")}
-      <tr><td colspan="5"><b>Total</b></td><td>${k.exp.toLocaleString()}</td><td>${k.map.toLocaleString()}</td><td>${Math.round(k.cov * 100)}%</td><td>${Math.max(0, k.exp - k.map).toLocaleString()}</td></tr>
+      <tr><td colspan="5"><b>Total</b></td><td>${k.exp.toLocaleString()}</td><td>${k.map.toLocaleString()}</td><td>${Math.min(100, Math.round(k.cov * 100))}%</td><td>${k.proxy.toLocaleString()}</td></tr>
       </tbody></table></div>
   </div>`;
 }
@@ -816,7 +954,7 @@ function viewPeople(c) {
     </table></div>
     <div class="card stack">
       <h2>Issues</h2>
-      <p class="note">An open issue takes 10 points off sentiment. Resolving it puts the points back. This is separate from plan health.</p>
+      <p class="note">Issues stay on the account. They do not change the urgency score.</p>
       ${(c.issues || []).map((issue, i) => `<div class="form">
         <label>Title<input data-issue="${i}" data-key="title" value="${esc(issue.title)}"></label>
         <label>Severity<select data-issue="${i}" data-key="severity">${["Sev-1", "Sev-2", "Sev-3"].map((s) => `<option${s === issue.severity ? " selected" : ""}>${s}</option>`).join("")}</select></label>
@@ -839,41 +977,18 @@ function viewPeople(c) {
 
 function viewScore(c, k, sc) {
   return `<div class="stack">
-    <p class="lede">Account score ${sc.total} out of 100.</p>
-    <p class="note">Each driver is a number from 0 to 100. Contribution = driver × weight. Weights are editable and should add to 100. They currently add to ${sc.weightSum}. Plan health is not this score. Plan health is ${labelRag(k.health)}: ${esc(healthRule(k))}.</p>
+    <p class="lede">Project urgency ${sc.total} out of 100.</p>
+    <div class="card">
+      <h2>Open urgencies</h2>
+      <ul class="clean">${sc.urgencies.map((line) => `<li>${esc(line)}</li>`).join("") || "<li>Nothing is blocked, late, on a proxy, or sitting with someone quiet.</li>"}</ul>
+    </div>
+    <p class="note">Each line is 0 to 100. Points on the right are that line times its weight. Weights should add to 100. They currently add to ${sc.weightSum}. Plan colour is separate: it is ${labelRag(k.health)} (${esc(healthRule(k))}).</p>
     <div class="card form">
-      ${Object.keys(DEFAULT_WEIGHTS).map((key) => `<label>${esc(key)} weight<input class="input" data-weight="${esc(key)}" type="number" min="0" max="100" value="${esc(state.weights[key])}"></label>`).join("")}
+      ${Object.keys(DEFAULT_WEIGHTS).map((key) => `<label>${esc(WEIGHT_LABELS[key])} weight<input class="input" data-weight="${esc(key)}" type="number" min="0" max="100" value="${esc(state.weights[key] != null ? state.weights[key] : DEFAULT_WEIGHTS[key])}"></label>`).join("")}
     </div>
     <div class="card parts">
-      ${sc.parts.map((p) => `<div class="part"><div><b>${esc(p.label)}</b><div class="note">${esc(p.detail)}</div></div><div><div class="note">Driver</div><div class="pts">${p.score}</div></div><div><div class="note">× ${p.weight}%</div><div class="pts">${p.contribution}</div></div></div>`).join("")}
-      <div class="part"><div><b>Total</b><div class="note">Sum of the contributions.</div></div><div></div><div><div class="pts">${sc.total}</div></div></div>
-    </div>
-  </div>`;
-}
-
-function viewRenewal(c, k, sc) {
-  const rd = renewalDays(c);
-  const trace = c.data.find((r) => /trace/i.test(r.sys));
-  return `<div class="stack">
-    <div class="form card">
-      ${field("contractStart", "Contract start", c.contractStart, "date")}
-      ${field("renewal", "Renewal date", c.renewal, "date")}
-      <label>Renewal status<select data-field="renewalStatus">${["Not started", "Outreach", "Proposal", "Negotiation", "Closed won", "Closed lost"].map((s) => `<option${s === c.renewalStatus ? " selected" : ""}>${esc(s)}</option>`).join("")}</select></label>
-    </div>
-    <div class="kpis">
-      ${kpi("Days to renewal", rd, fmtY(D(c.renewal)))}
-      ${kpi("Account score", sc.total, sc.total < 60 ? "Under 60. Raise it before a renewal conversation." : "60 or above.")}
-      ${kpi("Plan health", k.health, healthRule(k))}
-    </div>
-    <div class="card">
-      <h2>Questions worth raising later</h2>
-      <p class="note" style="margin:6px 0 8px">These are questions, not a forecast. Nothing here is a commitment from ${esc(c.name)}.</p>
-      <ul class="clean">
-        <li>More categories: waves 1 to 3 are the agreed path after a go. A further category is a separate conversation.</li>
-        <li>More of the supplier set on primary data: supplier primary coverage is ${Math.round(k.supCov * 100)}% in this example.</li>
-        ${trace ? `<li>${esc(trace.sys)} is ${esc(trace.status).toLowerCase()}. ${(+trace.map || 0).toLocaleString()} of ${(+trace.exp || 0).toLocaleString()} mapped. Connecting the rest is the expansion, once the pilot decision is made.</li>` : ""}
-        <li>A second brand or banner only if the sponsor raises the group. Do not assume it.</li>
-      </ul>
+      ${sc.parts.map((p) => `<div class="part"><div><b>${esc(p.label)}</b><div class="note">${esc(p.detail)}</div></div><div><div class="note">Out of 100</div><div class="pts">${p.score}</div></div><div><div class="note">× ${p.weight}%</div><div class="pts">${p.contribution}</div></div></div>`).join("")}
+      <div class="part"><div><b>Total</b><div class="note">Sum of the points.</div></div><div></div><div><div class="pts">${sc.total}</div></div></div>
     </div>
   </div>`;
 }
@@ -886,7 +1001,7 @@ function render() {
   document.querySelectorAll("#nav button").forEach((b) => b.classList.toggle("on", b.dataset.view === state.view));
   const sel = document.getElementById("clientSel");
   sel.innerHTML = state.clients.map((a) => `<option value="${esc(a.id)}"${a.id === c.id ? " selected" : ""}>${esc(a.name)}</option>`).join("");
-  const views = { today: viewToday, snapshot: () => viewSnapshot(c, k, sc), plan: () => viewPlan(c, k), tasks: () => viewTasks(c, k), data: () => viewData(c, k), people: () => viewPeople(c), score: () => viewScore(c, k, sc), renewal: () => viewRenewal(c, k, sc) };
+  const views = { today: viewToday, snapshot: () => viewSnapshot(c, k, sc), plan: () => viewPlan(c, k), tasks: () => viewTasks(c, k), data: () => viewData(c, k), people: () => viewPeople(c), score: () => viewScore(c, k, sc) };
   document.getElementById("app").innerHTML = (views[state.view] || views.snapshot)();
 }
 
@@ -901,6 +1016,18 @@ function setClientField(key, value) {
 function onChange(e) {
   const t = e.target;
   const c = client();
+  if (t.dataset.taskFilter) {
+    taskUi[t.dataset.taskFilter] = t.value;
+    const id = t.id;
+    const pos = t.selectionStart;
+    render();
+    const next = id && document.getElementById(id);
+    if (next) {
+      next.focus();
+      if (typeof pos === "number" && next.setSelectionRange) next.setSelectionRange(pos, pos);
+    }
+    return;
+  }
   if (t.dataset.phase != null) {
     const phases = touchPhases(c);
     const phase = phases[+t.dataset.phase];
@@ -913,7 +1040,7 @@ function onChange(e) {
     return;
   }
   if (t.dataset.field) {
-    if ((t.dataset.field === "kickoff" || t.dataset.field === "asof" || t.dataset.field === "renewal" || t.dataset.field === "contractStart") && !t.value) return;
+    if ((t.dataset.field === "kickoff" || t.dataset.field === "asof" || t.dataset.field === "contractStart") && !t.value) return;
     setClientField(t.dataset.field, t.type === "number" ? Math.max(1, +t.value || 1) : t.value);
     return;
   }
@@ -960,8 +1087,8 @@ function downloadCsv() {
   const c = client();
   const k = calc(c);
   const q = (v) => `"${String(v).replace(/"/g, '""')}"`;
-  const lines = [["ID", "Phase", "Task", "Owner", "Client team", "Due", "Status", "Days late", "RAG"].join(",")];
-  k.tasks.forEach((t) => lines.push([t.id, t.ph, q(t.name), t.owner, q(t.team), iso(t.due), t.status, t.late, t.rag].join(",")));
+  const lines = [["ID", "Phase", "Task", "Owner", "Client team", "Due", "Status", "Days late", "Colour"].join(",")];
+  k.tasks.forEach((t) => lines.push([t.id, t.ph, q(t.name), t.owner, q(t.team), iso(t.due), t.status, t.late, labelRag(t.rag)].join(",")));
   const blob = new Blob([lines.join("\n")], { type: "text/csv" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
@@ -995,6 +1122,15 @@ function onClick(e) {
     render();
     return;
   }
+  const removeTask = e.target.closest("[data-remove-task]");
+  if (removeTask) {
+    const c = client();
+    c.tasks = c.tasks.filter((task) => task.id !== removeTask.dataset.removeTask);
+    openTask.delete(removeTask.dataset.removeTask);
+    save();
+    render();
+    return;
+  }
   const editTask = e.target.closest("[data-edit-task]");
   if (editTask) {
     const id = editTask.dataset.editTask;
@@ -1015,6 +1151,22 @@ function onClick(e) {
     render();
     return;
   }
+  const removeSource = e.target.closest("[data-remove-source]");
+  if (removeSource) {
+    const c = client();
+    c.data.splice(+removeSource.dataset.removeSource, 1);
+    save();
+    render();
+    return;
+  }
+  if (e.target.id === "addSource") {
+    const c = client();
+    c.data = c.data || [];
+    c.data.push({ sys: "New source", type: "Product", owner: "", conn: "API", status: "Requested", exp: 0, map: 0 });
+    save();
+    render();
+    return;
+  }
   if (e.target.id === "addPerson") {
     const c = client();
     c.stakeholders = c.stakeholders || [];
@@ -1025,10 +1177,13 @@ function onClick(e) {
   }
   if (e.target.id === "addTask") {
     const c = client();
-    const n = c.tasks.length + 1;
-    c.tasks.push({ id: "T" + String(n).padStart(2, "0"), ph: "P1", name: "New task", owner: "Carbon Trail", team: "", off: 0, status: "Not started" });
+    const n = c.tasks.reduce((max, task) => Math.max(max, Number(String(task.id).replace(/\D/g, "")) || 0), 0) + 1;
+    const id = "T" + String(n).padStart(2, "0");
+    c.tasks.push({ id, ph: "P1", name: "New task", owner: "Carbon Trail", team: "", off: 0, status: "Not started" });
+    openTask.add(id);
     save();
     render();
+    return;
   }
   if (e.target.id === "addIssue") {
     const c = client();
@@ -1046,7 +1201,7 @@ function onClick(e) {
     c.activities.push({ date: c.asof, type: "Note", note: note || "Note added.", next });
     if (next) {
       const k = calc(c);
-      const ph = (k.cur[0] && k.cur[0].id) || "P5";
+      const ph = (k.cur[0] && k.cur[0].id) || "P4";
       const n = c.tasks.length + 1;
       c.tasks.push({ id: "T" + String(n).padStart(2, "0"), ph, name: next, owner: "Carbon Trail", team: "Sustainability", off: 3, status: "Not started" });
     }
@@ -1065,6 +1220,9 @@ function boot() {
     render();
   });
   document.getElementById("app").addEventListener("change", onChange);
+  document.getElementById("app").addEventListener("input", (e) => {
+    if (e.target.dataset.taskFilter === "q") onChange(e);
+  });
   document.getElementById("app").addEventListener("click", onClick);
   document.getElementById("clientSel").addEventListener("change", (e) => { state.cur = e.target.value; save(); render(); });
   document.getElementById("newBtn").addEventListener("click", () => { document.getElementById("modal").hidden = false; document.getElementById("newName").focus(); });
@@ -1077,7 +1235,7 @@ function boot() {
     const kick = nextMonday();
     state.clients.push({
       id, name, kind: "Illustrative. Created from the template in this browser.", real: false, stage: "POC", owner: "Adithya Nair",
-      kickoff: kick, poc: 4, roll: 3, asof: kick, contractStart: kick, renewal: iso(addDays(D(kick), 365)), renewalStatus: "Not started",
+      kickoff: kick, poc: 4, roll: 3, asof: kick, contractStart: kick,
       licensed: 8, activeUsers: 0, lastLogin: kick, firstFootprint: "", csat: 0, nps: 0,
       tasks: blankTasks(), data: blankData(),
       stakeholders: people([["Exec sponsor", "Sustainability", "High", kick], ["Sustainability lead", "Sustainability", "High", kick], ["Product lead", "Product", "Medium", kick], ["Sourcing lead", "Procurement", "Medium", kick], ["Integrations lead", "IT", "Medium", kick], ["Finance partner", "Finance", "Medium", kick]]),
