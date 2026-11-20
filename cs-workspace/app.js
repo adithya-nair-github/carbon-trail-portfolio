@@ -9,7 +9,7 @@ const VIEWS = [
   ["tasks", "Tasks"],
   ["data", "Data"],
   ["people", "People"],
-  ["score", "Urgency"]
+  ["score", "Project health"]
 ];
 
 const PHASES = [
@@ -374,7 +374,7 @@ function scoreOf(c, k) {
   const parts = [
     {
       key: "schedule", label: "Schedule", score: schedule, weight: +w.schedule || 0,
-      detail: donePct + "% of tasks are done (" + k.done + " of " + k.tasks.length + "). Each overdue task takes 5. Each blocked task takes 15. " + donePct + " − " + (k.overdue * 5) + " − " + (k.blocked * 15) + " = " + schedule + "."
+      detail: k.done + " of " + k.tasks.length + " tasks are done. " + k.overdue + (k.overdue === 1 ? " is overdue. " : " are overdue. ") + k.blocked + (k.blocked === 1 ? " is blocked." : " are blocked.")
     },
     {
       key: "coverage", label: "Coverage", score: coverage, weight: +w.coverage || 0,
@@ -382,7 +382,7 @@ function scoreOf(c, k) {
     },
     {
       key: "ownership", label: "Ownership", score: ownership, weight: +w.ownership || 0,
-      detail: named + " of " + ownedItems + " open tasks have a named team. " + (quiet.length ? quiet.map((p) => p.role + " (" + p.team + ") is quiet " + p.age + " days on an open task, so 20 points come off.").join(" ") : "Nobody quiet for 30 days is sitting on an open task.")
+      detail: named + " of " + ownedItems + " open tasks have a named team. " + (quiet.length ? quiet.map((p) => p.role + " (" + p.team + ") has not been contacted in " + p.age + " days.").join(" ") : "Nobody quiet for 30 days is sitting on an open task.")
     },
     {
       key: "movement", label: "Movement", score: movement, weight: +w.movement || 0,
@@ -625,6 +625,17 @@ function pill(rag) {
   const shown = labelRag(rag);
   return `<span class="pill ${esc(shown)}">${esc(shown)}</span>`;
 }
+function taskWord(rag) {
+  const shown = labelRag(rag);
+  return shown === "Yellow" ? "Due soon" : shown;
+}
+function taskClass(rag) {
+  const shown = labelRag(rag);
+  return shown === "Yellow" ? "Yellow" : shown;
+}
+function taskPill(rag) {
+  return `<span class="pill ${esc(taskClass(rag))}">${esc(taskWord(rag))}</span>`;
+}
 
 function methodStrip() {
   return `<div class="steps">
@@ -644,16 +655,15 @@ function viewToday() {
   const red = rows.filter((r) => r.k.health === "Red").length;
   return `<div class="stack">
     <p class="lede">Which account needs a move, and which team makes it.</p>
-    <p class="note">Plan colour is the weekly rule: Red if anything is blocked or three or more tasks are overdue, Yellow if any task is overdue, otherwise Green. Open urgencies are the blocked and overdue tasks.</p>
     <div class="kpis">
       ${kpi("Accounts", rows.length, "Open projects")}
-      ${kpi("Plan colour Red", red, "Blocked, or 3+ overdue")}
-      ${kpi("Open urgencies", rows.reduce((a, r) => a + r.sc.urgencies.length, 0), "Across these accounts")}
+      ${kpi("Plan colour Red", red, "Accounts")}
+      ${kpi("Blocked or late", rows.reduce((a, r) => a + r.sc.urgencies.length, 0), "Across these accounts")}
     </div>
     ${rows.map((r) => `<button type="button" class="card account" data-open="${esc(r.c.id)}">
       <div><h2>${esc(r.c.name)}</h2><div class="note">${esc(phaseNow(r.k))}</div></div>
       <div>${pill(r.k.health)}<div class="note">Plan</div></div>
-      <div><b>${r.sc.urgencies.length}</b><div class="note">Open urgencies</div></div>
+      <div><b>${r.sc.total}</b><div class="note">Project health</div></div>
       <div><b>${esc(nextTeam(r.k))}</b><div class="note">Next team</div></div>
     </button>`).join("")}
   </div>`;
@@ -682,7 +692,7 @@ function viewSnapshot(c, k) {
       <p>${pill(k.health)} <span class="note">${esc(healthRule(k))}</span></p>
     </section>
     <section class="card">
-      <h2>Open urgencies</h2>
+      <h2>Blocked and overdue</h2>
       <p class="note">Updated from the task inputs</p>
       <ol class="clean">${issues.map((item) => `<li>${esc(item.line)}</li>`).join("") || "<li>No task is blocked or overdue.</li>"}</ol>
     </section>
@@ -741,16 +751,15 @@ function phaseChoices(c, selected) {
   return ids.map((id) => `<option${id === selected ? " selected" : ""}>${esc(id)}</option>`).join("");
 }
 function statusSelect(t) {
-  const tone = labelRag(t.rag);
-  return `<select class="${esc(tone)}" data-task="${esc(t.id)}" data-key="status" aria-label="Status">${TASK_STATUSES.map((s) => `<option${s === t.status ? " selected" : ""}>${esc(s)}</option>`).join("")}</select>`;
+  return `<select class="${esc(taskClass(t.rag))}" data-task="${esc(t.id)}" data-key="status" aria-label="Status">${TASK_STATUSES.map((s) => `<option${s === t.status ? " selected" : ""}>${esc(s)}</option>`).join("")}</select>`;
 }
 function taskCard(c, t, allowEdit) {
-  const tone = labelRag(t.rag);
+  const tone = taskClass(t.rag);
   const editing = allowEdit && openTask.has(t.id);
   const late = t.late > 0 ? ` · ${t.late} day${t.late === 1 ? "" : "s"} late` : "";
   return `<article class="task-card ${esc(tone)}">
     <div class="task-card-top">
-      ${pill(tone)}
+      ${taskPill(t.rag)}
       ${allowEdit ? `<button type="button" class="text-btn" data-edit-task="${esc(t.id)}">${editing ? "Close" : "Edit"}</button>` : ""}
     </div>
     <h3 class="task-name">${esc(t.name)}</h3>
@@ -771,12 +780,12 @@ function taskBoard(c, rows) {
   if (taskUi.sort !== "attention") {
     return `<div class="task-cards">${rows.map((t) => taskCard(c, t, true)).join("")}</div>`;
   }
-  return ["Red", "Yellow", "Green", "Done"].map((tone) => {
+  return [["Red", "Red"], ["Yellow", "Due soon"], ["Green", "Green"], ["Done", "Done"]].map(([tone, label]) => {
     const list = rows.filter((t) => labelRag(t.rag) === tone);
     if (!list.length) return "";
     if (tone === "Red") list.sort((a, b) => (b.status === "Blocked") - (a.status === "Blocked") || b.late - a.late || dueTime(a) - dueTime(b));
     else list.sort((a, b) => dueTime(a) - dueTime(b) || String(a.id).localeCompare(String(b.id)));
-    return `<section class="task-group"><h3 class="task-group-h"><span class="pill ${esc(tone)}">${esc(tone)}</span> ${list.length}</h3><div class="task-cards">${list.map((t) => taskCard(c, t, true)).join("")}</div></section>`;
+    return `<section class="task-group"><h3 class="task-group-h"><span class="pill ${esc(tone)}">${esc(label)}</span> ${list.length}</h3><div class="task-cards">${list.map((t) => taskCard(c, t, true)).join("")}</div></section>`;
   }).join("");
 }
 function taskList(c, rows, allowEdit) {
@@ -837,7 +846,7 @@ function viewTasks(c, k) {
   if (taskUi.phase !== "All") rows = rows.filter((t) => t.ph === taskUi.phase);
   if (taskUi.owner !== "All") rows = rows.filter((t) => t.owner === taskUi.owner);
   if (taskUi.status !== "All") rows = rows.filter((t) => t.status === taskUi.status);
-  if (taskUi.colour !== "All") rows = rows.filter((t) => labelRag(t.rag) === taskUi.colour);
+  if (taskUi.colour !== "All") rows = rows.filter((t) => taskWord(t.rag) === taskUi.colour);
   const dueTime = (t) => okDate(t.due) ? t.due.getTime() : 0;
   if (taskUi.sort === "due") rows.sort((a, b) => dueTime(a) - dueTime(b) || String(a.id).localeCompare(String(b.id)));
   else if (taskUi.sort === "phase") rows.sort((a, b) => String(a.ph).localeCompare(String(b.ph)) || dueTime(a) - dueTime(b));
@@ -848,7 +857,7 @@ function viewTasks(c, k) {
         <label>Phase<select data-task-filter="phase">${filterOptions(["All", ...phases], taskUi.phase)}</select></label>
         <label>Owner<select data-task-filter="owner">${filterOptions(["All", "Carbon Trail", "Client"], taskUi.owner)}</select></label>
         <label>Status<select data-task-filter="status">${filterOptions(["All", ...TASK_STATUSES], taskUi.status)}</select></label>
-        <label>Colour<select data-task-filter="colour">${filterOptions(["All", "Red", "Yellow", "Green", "Done"], taskUi.colour)}</select></label>
+        <label>Colour<select data-task-filter="colour">${filterOptions(["All", "Red", "Due soon", "Green", "Done"], taskUi.colour)}</select></label>
         <label>Sort<select id="taskSort" data-task-filter="sort">
           <option value="attention"${taskUi.sort === "attention" ? " selected" : ""}>Needs attention</option>
           <option value="due"${taskUi.sort === "due" ? " selected" : ""}>Due date</option>
@@ -916,7 +925,7 @@ function viewPeople(c) {
     </table></div>
     <div class="card stack">
       <h2>Issues</h2>
-      <p class="note">Issues stay on the account. They do not change the urgency score.</p>
+      <p class="note">Issues stay on the account. They do not change project health.</p>
       ${(c.issues || []).map((issue, i) => `<div class="form">
         <label>Title<input data-issue="${i}" data-key="title" value="${esc(issue.title)}"></label>
         <label>Severity<select data-issue="${i}" data-key="severity">${["Sev-1", "Sev-2", "Sev-3"].map((s) => `<option${s === issue.severity ? " selected" : ""}>${s}</option>`).join("")}</select></label>
@@ -939,13 +948,12 @@ function viewPeople(c) {
 
 function viewScore(c, k, sc) {
   return `<div class="stack">
-    <p class="lede">Project urgency ${sc.total} out of 100.</p>
+    <p class="lede">Project health ${sc.total} out of 100.</p>
     <div class="card">
-      <h2>Open urgencies</h2>
+      <h2>Blocked and overdue</h2>
       <p class="note">Updated from the task inputs</p>
       <ul class="clean">${sc.urgencies.map((line) => `<li>${esc(line)}</li>`).join("") || "<li>No task is blocked or overdue.</li>"}</ul>
     </div>
-    <p class="note">Each line is 0 to 100. Points on the right are that line times its weight. Weights should add to 100. They currently add to ${sc.weightSum}. Plan colour is separate: it is ${labelRag(k.health)} (${esc(healthRule(k))}).</p>
     <div class="card form">
       ${Object.keys(DEFAULT_WEIGHTS).map((key) => `<label>${esc(WEIGHT_LABELS[key])} weight<input class="input" data-weight="${esc(key)}" type="number" min="0" max="100" value="${esc(state.weights[key] != null ? state.weights[key] : DEFAULT_WEIGHTS[key])}"></label>`).join("")}
     </div>
@@ -1051,7 +1059,7 @@ function downloadCsv() {
   const k = calc(c);
   const q = (v) => `"${String(v).replace(/"/g, '""')}"`;
   const lines = [["ID", "Phase", "Task", "Owner", "Client team", "Due", "Status", "Days late", "Colour"].join(",")];
-  k.tasks.forEach((t) => lines.push([t.id, t.ph, q(t.name), t.owner, q(t.team), iso(t.due), t.status, t.late, labelRag(t.rag)].join(",")));
+  k.tasks.forEach((t) => lines.push([t.id, t.ph, q(t.name), t.owner, q(t.team), iso(t.due), t.status, t.late, taskWord(t.rag)].join(",")));
   const blob = new Blob([lines.join("\n")], { type: "text/csv" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
