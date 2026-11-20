@@ -413,14 +413,6 @@ function planIssues(c, k) {
   });
   return items;
 }
-function phaseTeams(k) {
-  const names = [];
-  k.cur.forEach((p) => String(p.team || "").split(",").forEach((part) => names.push(part.trim())));
-  k.tasks.filter((t) => t.status !== "Done" && k.cur.some((p) => p.id === t.ph)).forEach((t) => {
-    String(t.team || "").split(",").forEach((part) => names.push(part.trim()));
-  });
-  return [...new Set(names.filter(Boolean))];
-}
 function nextTeam(k) {
   const blocked = k.tasks.filter((t) => t.status === "Blocked").sort((a, b) => b.late - a.late)[0];
   if (blocked) return blocked.team || "Unassigned";
@@ -675,9 +667,7 @@ function kpi(l, v, s) {
 
 function viewSnapshot(c, k) {
   const issues = planIssues(c, k);
-  const phase = k.cur[0];
   const stage = k.cur.length ? [...new Set(k.cur.map((p) => p.stage))].join(" and ") : (c.stage || "Between phases");
-  const teams = phaseTeams(k);
   const pct = k.exp ? Math.min(100, Math.round(k.cov * 100)) : 0;
   return `<div class="stack">
     <section class="card">
@@ -695,11 +685,6 @@ function viewSnapshot(c, k) {
       <h2>Open urgencies</h2>
       <p class="note">Updated from the task inputs</p>
       <ol class="clean">${issues.map((item) => `<li>${esc(item.line)}</li>`).join("") || "<li>No task is blocked or overdue.</li>"}</ol>
-    </section>
-    <section class="card">
-      <h2>Teams on this phase</h2>
-      <p class="note">${phase ? esc(phase.id + " " + phase.name) : "No current phase."}</p>
-      <div class="teams">${teams.map((name) => `<span class="team">${esc(name)}</span>`).join("") || `<span class="note">No client team is named on this phase.</span>`}</div>
     </section>
     <section class="card">
       <h2>Coverage</h2>
